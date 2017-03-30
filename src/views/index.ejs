@@ -1,0 +1,45 @@
+<style>
+.button {
+  border: 1px solid black;
+  width: 60px;
+  text-align: center;
+  cursor: pointer;
+}
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>NodeJS Example</title>
+    <meta charset="utf-8">
+    <meta name="description"  content="This is the index">
+    <meta name="author"       content="Tundra Fizz">
+    <link rel="shortcut icon" href="/img/icon.jpg">
+    <link rel="stylesheet"    href="/css/theme.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="/js/lib/socket.io.js"></script>
+    <script src="/js/lib/cookie.js"></script>
+    <script src="/js/src/index.js"></script>
+  </head>
+
+  <body>
+    <div>
+      <input style="display: inline-block;" id="name" type="text">
+      <div onselectstart="return false;" style="display: inline-block;" class="button" onclick="SignUp()">Sign Up</div>
+    </div>
+
+    <div>
+      <input style="display: inline-block;" id="name2" type="text">
+      <div style="display: inline-block;" class="button" onclick="Login()">Login</div>
+    </div>
+
+    <div class="button" onclick="Logout()">Logout</div>
+
+    <hr>
+
+    <input style="display: inline-block;" id="message" type="text"><div style="display: inline-block;" class="button" onclick="Post()">Post</div>
+
+    <div id="msg-box" class="content">
+    </div>
+  </body>
+</html>

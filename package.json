@@ -1,0 +1,58 @@
+{
+  "name": "tundra-forum",
+  "version": "0.1.0",
+  "description": "Forum software",
+  "main": "server.js",
+  "author": "Tundra Fizz",
+  "license": "ISC",
+  "dependencies": {
+    "express": "latest",
+    "ejs": "latest",
+    "body-parser": "latest",
+    "socket.io": "latest",
+    "node-sass-middleware": "latest",
+    "node-mysql": "latest",
+    "crypto": "latest"
+  },
+  "dependency-comments": {
+    "express": "Node.js web application framework",
+    "ejs": "Embedded JavaScript templates",
+    "body-parser": "Enables easy access to GET/POST variables via req.body",
+    "socket.io": "Enables real-time bidirectional communication between client/server",
+    "node-sass-middleware": "Converts .sass files to .css",
+    "node-mysql": "Allows me to connect to a MySQL database and use it"
+  },
+  "devDependencies": {
+    "istanbul": "latest",
+    "mocha": "latest",
+    "supertest": "latest",
+    "nyc": "latest",
+    "nodeunit": "latest",
+    "jscoverage": "latest",
+    "codecov": "latest",
+    "codacy-coverage": "latest",
+    "mocha-lcov-reporter": "latest",
+    "chai": "latest"
+  },
+  "devDependencies comments": {
+    "mocha": "Testing framework",
+    "istanbul": "Coverage tool that works alongside mocha",
+    "supertest": "Allows you write HTTP test cases in mocha",
+    "nyc": "NO IDEA",
+    "nodeunit": "NO IDEA",
+    "jscoverage": "NO IDEA",
+    "coveralls": "I THINK I CAN REMOVE THIS",
+    "codecov": "NO IDEA",
+    "codacy-coverage": "Needed so that I can get a Coverage badge",
+    "mocha-lcov-reporter": "A dependency for codacy-coverage",
+    "chai": "Allows use of the 'assert' command when doing unit tests"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage && rm -rf ./coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TundraFizz/Tundra-Forum.git"
+  }
+}

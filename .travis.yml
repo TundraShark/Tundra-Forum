@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+- "stable"
+services:
+  - mysql
+before_script:
+  - mysql < test/test.sql
+notifications:
+  email: false
