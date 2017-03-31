@@ -14,12 +14,8 @@ var algorithm = "aes-256-gcm";
 var specialKey = "3zTvzr3p67VC61jmV54rIYu1545x4TlY";
 
 function encrypt(text){
-  console.log("User entered:", text);
-  console.log("Special Key: ", specialKey);
   var trimmedKey = specialKey.substring(0, 32-text.length);;
-  console.log("Trimmed Key: ", trimmedKey);
   var appendedKey = text+trimmedKey;
-  console.log("Appended Key:", appendedKey);
 
   var iv = crypto.randomBytes(32);
 
@@ -35,12 +31,8 @@ function encrypt(text){
 }
 
 function decrypt(encrypted, pass, iv){
-  console.log("User entered:", pass);
-  console.log("Special Key: ", specialKey);
   var trimmedKey = specialKey.substring(0, 32-pass.length);;
-  console.log("Trimmed Key: ", trimmedKey);
   var appendedKey = pass+trimmedKey;
-  console.log("Appended Key:", appendedKey);
 
   var decipher = crypto.createDecipheriv(algorithm, appendedKey, iv)
   decipher.setAuthTag(encrypted.tag);
