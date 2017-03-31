@@ -113,7 +113,19 @@ io.on("connection", function(socket){
     delete players[socket.id];
   });
 
+  socket.on("fetch-threads", function(msg){
+    var sql = "SELECT * FROM threads WHERE board_id = ?";
+    var args = [msg]
+    con.query(sql, args, function(err, rows){
+      ejs.renderFile("./views/test2.ejs", {rows: rows}, function(err, html){
+        socket.emit("fetch-threads", html);
+      });
+    });
+  });
+
   // Get the boards listing for the user
+  // NOTE: This depends on what the URL is because I want people
+  //       to be able to go to a specific board or thread
   var sql = "SELECT * FROM boards";
   con.query(sql, function(err, rows){
     // ejs.renderFile("test.ejs", qwe, options, function(err, html){

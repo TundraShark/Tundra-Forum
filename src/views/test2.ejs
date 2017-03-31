@@ -1,0 +1,21 @@
+<% for(var i = 0; i < rows.length; i++){ %>
+<div class="thread" thread-id=<%= rows[i]["thread_id"] %>>
+  <div class="icon"></div>
+  <div class="info">
+    <div class="title"><%= rows[i]["title"] %></div>
+    <div class="author">Started by <%= rows[i]["author"] %>,</div>
+    <div class="post-date"><%= rows[i]["post_date"] %></div>
+  </div>
+  <div class="stats">
+    <div class="post-count">Posts: <%= rows[i]["post_count"] %></div>
+    <div class="view-count">Views: TBD</div>
+  </div>
+  <div class="last-poster">
+    <div class="last-poster-id"><%= rows[i]["last_poster_id"] %></div>
+    <div class="last-poster-date"><%= rows[i]["last_poster_date"] %></div>
+  </div>
+</div>
+<% } %>
+</div>
+
+<script>BindThread()</script>

@@ -51,6 +51,22 @@ socket.on("bad-auth", function(msg){
 });
 
 socket.on("boards", function(msg){
-  $("#tundra-forum").html(msg);
+  $("#board-index").html(msg);
   // history.pushState(null, null, msg);
 });
+
+socket.on("fetch-threads", function(msg){
+  $("#threads").html(msg);
+  // history.pushState(null, null, msg);
+});
+
+function BindBoard(){
+  $(".board").click(function(event){
+    var boardId = $(this).attr("board-id");
+    socket.emit("fetch-threads", boardId);
+  });
+}
+
+function BindThread(){
+  // Todo
+}
