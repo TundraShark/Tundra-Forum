@@ -48,7 +48,7 @@ CREATE TABLE `posts` (
   `author` int(11) unsigned NOT NULL,
   `post` longtext NOT NULL,
   `first_post` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `ip_address` varchar(15) NOT NULL,
+  `ip_address` varchar(20) NOT NULL,
   `post_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `edit_date` datetime DEFAULT NULL,
   PRIMARY KEY (`post_id`),
@@ -94,7 +94,9 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(24) NOT NULL,
-  `password` varchar(96) NOT NULL,
+  `password_content` varchar(96) NOT NULL,
+  `password_tag` varchar(96) NOT NULL,
+  `password_iv` varchar(96) NOT NULL,
   `email` varchar(50) NOT NULL,
   `permission` int(11) unsigned NOT NULL DEFAULT '0',
   `post_count` int(11) unsigned NOT NULL DEFAULT '0',
@@ -103,6 +105,7 @@ CREATE TABLE `users` (
   `last_seen` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `title` varchar(30) DEFAULT NULL,
   `token` varchar(96) DEFAULT NULL,
+  `userscol` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `UNI_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -117,4 +120,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-29 11:09:50
+-- Dump completed on 2017-03-30 17:19:10
