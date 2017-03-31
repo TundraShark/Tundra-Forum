@@ -30,6 +30,7 @@ CREATE TABLE `boards` (
   `description` text,
   `thread_count` int(11) unsigned DEFAULT '0',
   `post_count` int(11) unsigned DEFAULT '0',
+  `icon` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`board_id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -120,4 +121,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-30 17:19:10
+-- Dump completed on 2017-03-31 12:01:10

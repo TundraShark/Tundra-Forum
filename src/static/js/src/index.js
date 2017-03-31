@@ -51,5 +51,6 @@ socket.on("bad-auth", function(msg){
 });
 
 socket.on("boards", function(msg){
-  console.log(msg);
+  $("#tundra-forum").html(msg);
+  // history.pushState(null, null, msg);
 });

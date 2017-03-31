@@ -128,7 +128,7 @@ app.post("/logout", function(req, res){
 });
 
 app.get("/", function(req, res){
-  res.render("./index.ejs");
+  res.render("index.ejs");
 });
 
 app.use(function(req, res){

@@ -1,5 +1,6 @@
 var io    = require("../server.js").io;
 var mysql = require("mysql");
+var ejs   = require("ejs");
 var fs    = require("fs");
 
 var players = {};
@@ -115,8 +116,10 @@ io.on("connection", function(socket){
   // Get the boards listing for the user
   var sql = "SELECT * FROM boards";
   con.query(sql, function(err, rows){
-    console.log(rows);
-    socket.emit("boards", rows);
+    // ejs.renderFile("test.ejs", qwe, options, function(err, html){
+    ejs.renderFile("./views/test.ejs", {rows: rows}, function(err, html){
+      socket.emit("boards", html);
+    });
   });
 });
 
