@@ -14,13 +14,13 @@ var algorithm = "aes-256-gcm";
 var specialKey = "3zTvzr3p67VC61jmV54rIYu1545x4TlY";
 
 function encrypt(text){
-  var trimmedKey = specialKey.substring(0, 32-text.length);;
+  var trimmedKey = specialKey.substring(0, 32-text.length);
   var appendedKey = text+trimmedKey;
 
   var iv = crypto.randomBytes(32);
 
-  var cipher = crypto.createCipheriv(algorithm, appendedKey, iv)
-  var encrypted = cipher.update(text, "utf-8", "base64")
+  var cipher = crypto.createCipheriv(algorithm, appendedKey, iv);
+  var encrypted = cipher.update(text, "utf-8", "base64");
   encrypted += cipher.final("base64");
   var tag = cipher.getAuthTag();
   return {
@@ -31,12 +31,12 @@ function encrypt(text){
 }
 
 function decrypt(encrypted, pass, iv){
-  var trimmedKey = specialKey.substring(0, 32-pass.length);;
+  var trimmedKey = specialKey.substring(0, 32-pass.length);
   var appendedKey = pass+trimmedKey;
 
-  var decipher = crypto.createDecipheriv(algorithm, appendedKey, iv)
+  var decipher = crypto.createDecipheriv(algorithm, appendedKey, iv);
   decipher.setAuthTag(encrypted.tag);
-  var dec = decipher.update(encrypted.content, "base64", "utf-8")
+  var dec = decipher.update(encrypted.content, "base64", "utf-8");
   dec += decipher.final("utf-8");
   return dec;
 }

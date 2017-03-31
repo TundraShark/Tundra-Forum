@@ -27,7 +27,7 @@ function Authenticate(msg, perm = 0){return new Promise((done) => {
       done(false); // User doesn't exist
     }
   });
-})}
+});}
 
 io.on("connection", function(socket){
   var ip = socket.conn.remoteAddress;
@@ -45,7 +45,7 @@ io.on("connection", function(socket){
       socket.emit("create-board", false);
       done();
     }
-  })};
+  });}
 
   function CreateThread(msg, res){return new Promise((done) => {
     if(res){
