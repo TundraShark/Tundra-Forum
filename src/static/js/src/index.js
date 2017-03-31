@@ -1,3 +1,4 @@
+// https://github.com/js-cookie/js-cookie
 var token = Cookies.get("token");
 console.log("YOUR COOKIE");
 console.log(token);
@@ -49,4 +50,6 @@ socket.on("bad-auth", function(msg){
   alert(msg);
 });
 
-// https://github.com/js-cookie/js-cookie
+socket.on("boards", function(msg){
+  console.log(msg);
+});

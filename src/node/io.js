@@ -14,7 +14,7 @@ var con = mysql.createConnection({
 function Authenticate(msg, perm = 0){return new Promise((done) => {
   var userId = msg["userId"];
   var token  = msg["token"];
-  var sql    = "SELECT permission FROM users WHERE ? AND ?;";
+  var sql    = "SELECT permission FROM users WHERE ? AND ?";
   var args   = [{user_id: userId}, {token: token}];
   con.query(sql, args, function(err, rows){
     if(rows.length){
@@ -31,6 +31,10 @@ function Authenticate(msg, perm = 0){return new Promise((done) => {
 
 io.on("connection", function(socket){
   var ip = socket.conn.remoteAddress;
+  var player = {};
+  player.num = 1;
+  player.id  = 1;
+  players[socket.id] = player;
 
   function CreateBoard(msg, res){return new Promise((done) => {
     if(res){
@@ -89,27 +93,6 @@ io.on("connection", function(socket){
     }
   })};
 
-  var player = {};
-  player.num = 1;
-  player.id  = 1;
-  players[socket.id] = player;
-
-  // io.to(socket.id).emit("custom", "Your ID is: " + idCounter);
-
-  socket.on("disconnect", function(){
-    delete players[socket.id];
-  });
-
-  // Send to everyone but the user that just made the connection
-  socket.broadcast.emit("hi", "someone else joined");
-
-  // Do this when the server receives a message titled, "message_c2s"
-  // socket.on("message_c2s", function(msg){
-  //   io.emit("message_s2c", msg);
-
-  //   if(msg == "stop") stopServer = true;
-  // });
-
   socket.on("create-board", function(msg){
     Authenticate(msg, 100)
     .then((res) => CreateBoard(msg, res));
@@ -123,6 +106,17 @@ io.on("connection", function(socket){
   socket.on("create-post", function(msg){
     Authenticate(msg)
     .then((res) => CreatePost(msg, res));
+  });
+
+  socket.on("disconnect", function(){
+    delete players[socket.id];
+  });
+
+  // Get the boards listing for the user
+  var sql = "SELECT * FROM boards";
+  con.query(sql, function(err, rows){
+    console.log(rows);
+    socket.emit("boards", rows);
   });
 });
 

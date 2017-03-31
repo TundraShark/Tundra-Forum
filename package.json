@@ -49,6 +49,7 @@
   },
   "scripts": {
     "start": "node src/server.js",
+    "nodemon": "nodemon src/server.js",
     "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage && rm -rf ./coverage"
   },
   "repository": {

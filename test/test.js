@@ -86,6 +86,16 @@ describe("Running all tests", function (){
     });
   });
 
+  it("Attempt a login to an existing account with a bad password", function(done){
+    request(server)
+    .post("/login")
+    .send({name: "Alex", pass: "incorrectPassword"})
+    .then(function(res){
+      assert(res.body["err"] == 1);
+      done();
+    });
+  });
+
   it("Login with a valid account", function(done){
     request(server)
     .post("/login")
