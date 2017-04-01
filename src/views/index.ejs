@@ -10,11 +10,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>NodeJS Example</title>
+    <title>Tundra Forum</title>
     <meta charset="utf-8">
     <meta name="description"  content="This is the index">
     <meta name="author"       content="Tundra Fizz">
-    <link rel="shortcut icon" href="/img/icon.jpg">
+    <link rel="shortcut icon" href="/img/icon/icon.jpg">
     <link rel="stylesheet"    href="/css/theme.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script src="/js/lib/socket.io.js"></script>
@@ -23,6 +23,7 @@
   </head>
 
   <body>
+    <!--
     <div>
       <input style="display: inline-block;" id="name" type="text">
       <div onselectstart="return false;" style="display: inline-block;" class="button" onclick="SignUp()">Sign Up</div>
@@ -38,10 +39,15 @@
     <hr>
 
     <input style="display: inline-block;" id="message" type="text"><div style="display: inline-block;" class="button" onclick="Post()">Post</div>
+    -->
 
-    <div id="board-index"></div>
-    <div id="threads"></div>
-    <div id="posts"></div>
+    <div id="forum-window">
+      <div id="forum-container">
+        <div id="board-index"></div>
+        <div id="threads"></div>
+        <div id="posts"></div>
+      </div>
+    </div>
 
     <div id="msg-box" class="content"></div>
   </body>

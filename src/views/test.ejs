@@ -1,7 +1,7 @@
 <% for(var i = 0; i < rows.length; i++){ %>
 <div class="board" board-id=<%= rows[i]["board_id"] %>>
   <div class="icon">
-    <div style="background-image: url(<%= rows[i]['icon'] %>)"></div>
+    <div style="background-image: url(/img/boards/<%= rows[i]["board_id"] %>.png)"></div>
   </div>
   <div class="info">
     <div class="name"><%= rows[i]["name"] %></div>

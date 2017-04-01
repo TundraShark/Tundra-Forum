@@ -27,7 +27,7 @@
 }
 
 /* 1-499 */
-@media (max-width: 499px) {
+/*@media (max-width: 499px) {
   .error-404-top {
     font-size: 100px;
   }
@@ -39,7 +39,7 @@
   .content {
     font-size: 8px;
   }
-}
+}*/
 
 /* Everything */
 body {
@@ -49,14 +49,31 @@ body {
   background-color: #ccc;
 }
 
+#forum-window {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  height: 800px;
+  width: 815px;
+  top: 300px;
+}
+
+#forum-container {
+  position: relative;
+  width: 2600px;
+}
+
 #board-index {
+  position: relative;
+  display: inline-block;
+  height: 800px;
+
   .board {
-    display: inline-block;
     cursor: pointer;
     border: 1px solid;
     height: 60px;
-    padding: 4px;    
-    max-width: 800px;
+    padding: 4px;
+    width: 800px;
 
     > div {
       display: inline-block;
@@ -76,13 +93,24 @@ body {
 }
 
 #threads {
+  position: relative;
+  display: inline-block;
+  height: 800px;
+
+  .back {
+    position: absolute;
+    border: 1px solid;
+    width: 100px;
+    height: 30px;
+    top: -20px;
+  }
+
   .thread {
-    display: inline-block;
     cursor: pointer;
     border: 1px solid;
     height: 50px;
-    padding: 4px;    
-    max-width: 800px;
+    padding: 4px;
+    width: 800px;
 
     > div {
       display: inline-block;
@@ -112,20 +140,90 @@ body {
       height: 100%;
       background-color: red;
     };
-
-/*    > div {
-      display: inline-block;
-      vertical-align: top;
-      font-size: 14px;
-      width: 150px;
-      height: 100%;
-    }*/
   }
 }
 
 #posts {
-  .post {
+  position: relative;
+  display: inline-block;
+  height: 800px;
 
+  .back {
+    position: absolute;
+    border: 1px solid;
+    width: 100px;
+    height: 30px;
+    top: -20px;
+  }
+
+  .post {
+    border: 1px solid;
+    height: 200px;
+    padding: 4px;
+    width: 800px;
+
+    > div {
+      display: inline-block;
+      float: left;
+    }
+
+    .user {
+      width: 150px;
+
+      .name {
+
+      }
+
+      .title {
+
+      }
+
+      .avatar {
+        img {
+          width: 140px;
+        }
+      }
+    }
+
+    .content {
+      /*width: 650px;*/
+
+      .post-date {
+
+      }
+
+      .post-content {
+
+      }
+
+      .ip-address {
+
+      }
+    }
+
+    .icon {
+      width: 20px;
+      height: 100%;
+      background-color: cyan;
+    };
+
+    .info {
+      width: 380px;
+      height: 100%;
+      background-color: green;
+    };
+
+    .stats {
+      width: 100px;
+      height: 100%;
+      background-color: yellow;
+    };
+
+    .last-poster {
+      width: 200px;
+      height: 100%;
+      background-color: red;
+    };
   }
 }
 

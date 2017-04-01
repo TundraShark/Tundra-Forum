@@ -23,7 +23,7 @@ describe("Running all tests", function (){
   beforeEach(() => client = io.connect("http://localhost:9001/", options));
   afterEach(() => client.disconnect());
 
-  var token;
+  var token1, token2;
 
   it("Truncating all tables", function(done){
     con.query("SET FOREIGN_KEY_CHECKS = 0", function(err, rows){
@@ -56,7 +56,7 @@ describe("Running all tests", function (){
     .expect(404, done);
   });
 
-  it("Create account", function(done){
+  it("Create account #1", function(done){
     request(server)
     .post("/sign-up")
     .send({name: "Alex", pass: "encryptThis!", email: "yolo@gmail.com"})
@@ -66,10 +66,20 @@ describe("Running all tests", function (){
     });
   });
 
+  it("Create account #2", function(done){
+    request(server)
+    .post("/sign-up")
+    .send({name: "Ben", pass: "justSomePassword", email: "swag@gmail.com"})
+    .then(function(res){
+      assert(res.body["err"] == 0);
+      done();
+    });
+  });
+
   it("Create account that already exists", function(done){
     request(server)
     .post("/sign-up")
-    .send({name: "Alex", pass: "somePassword", email: "swag@yahoo.com"})
+    .send({name: "Alex", pass: "somePassword", email: "teehee@yahoo.com"})
     .then(function(res){
       assert(res.body["err"] == 1);
       done();
@@ -96,96 +106,171 @@ describe("Running all tests", function (){
     });
   });
 
-  it("Login with a valid account", function(done){
+  it("Simulate login (get token for account #1)", function(done){
     request(server)
     .post("/login")
     .send({name: "Alex", pass: "encryptThis!"})
     .then(function(){
       con.query("SELECT token FROM users WHERE name='Alex'", function(err, rows){
-        token = rows[0]["token"];
-        assert(token);
+        token1 = rows[0]["token"];
+        assert(token1);
         done();
       });
+    });
+  });
+
+  it("Simulate login (get token for account #2)", function(done){
+    request(server)
+    .post("/login")
+    .send({name: "Ben", pass: "justSomePassword"})
+    .then(function(){
+      con.query("SELECT token FROM users WHERE name='Ben'", function(err, rows){
+        token2 = rows[0]["token"];
+        assert(token2);
+        done();
+      });
+    });
+  });
+
+  it("Set a title for account #1", function(done){
+    var obj = {};
+    obj["userId"] = 1;
+    obj["token"]  = token1;
+    obj["title"]  = "Fizz Main";
+
+    client.emit("set-title", obj);
+    client.on("set-title", function(msg){
+      assert(msg);
+      done();
     });
   });
 
   it("Try to create a board without permission", function(done){
-    con.query("SELECT token FROM users WHERE user_id=1", function(err, rows){
-      var obj = {};
-      obj["userId"]    = 1;
-      obj["token"]     = token;
-      obj["boardName"] = "Introductions";
-      obj["boardDesc"] = "Introduce yourself here";
+    var obj = {};
+    obj["userId"]    = 1;
+    obj["token"]     = token1;
+    obj["boardName"] = "Introductions";
+    obj["boardDesc"] = "Introduce yourself here";
 
-      client.emit("create-board", obj);
-      client.on("create-board", function(msg){
-        assert(msg == false);
-        done();
-      });
+    client.emit("create-board", obj);
+    client.on("create-board", function(msg){
+      assert(msg == false);
+      done();
     });
   });
 
-  it("Give user permission", function(done){
+  it("Give user #1 permission", function(done){
     con.query("UPDATE users SET permission=100 WHERE user_id=1", function(err, rows){
       assert(true);
       done();
     });
   });
 
-  it("Create a board with permission", function(done){
-    con.query("SELECT token FROM users WHERE user_id=1", function(err, rows){
-      var obj = {};
-      obj["userId"]    = 1;
-      obj["token"]     = token;
-      obj["boardName"] = "Introductions";
-      obj["boardDesc"] = "Introduce yourself here";
+  it("Create a board (Introductions)", function(done){
+    var obj = {};
+    obj["userId"]    = 1;
+    obj["token"]     = token1;
+    obj["boardName"] = "Introductions";
+    obj["boardDesc"] = "Introduce yourself";
 
-      client.emit("create-board", obj);
-      client.on("create-board", function(msg){
-        assert(msg);
-        done();
-      });
+    client.emit("create-board", obj);
+    client.on("create-board", function(msg){
+      assert(msg);
+      done();
     });
   });
 
-  it("Create a thread in that board", function(done){
-    con.query("SELECT token FROM users WHERE user_id=1", function(err, rows){
-      var obj = {};
-      obj["userId"]      = 1;
-      obj["token"]       = token;
-      obj["boardId"]     = 1;
-      obj["threadTitle"] = "Hello everyone!";
-      obj["post"]        = "I am new here, and this post is also the very first post for a test case.";
+  it("Create a board (General Discussion)", function(done){
+    var obj = {};
+    obj["userId"]    = 1;
+    obj["token"]     = token1;
+    obj["boardName"] = "General Discussion";
+    obj["boardDesc"] = "Talk about anything";
 
-      client.emit("create-thread", obj);
-      client.on("create-thread", function(msg){
-        assert(msg);
-        done();
-      });
+    client.emit("create-board", obj);
+    client.on("create-board", function(msg){
+      assert(msg);
+      done();
     });
   });
 
-  it("Make a post in that thread", function(done){
-    con.query("SELECT token FROM users WHERE user_id=1", function(err, rows){
-      var obj = {};
-      obj["userId"]   = 1;
-      obj["token"]    = token;
-      obj["threadId"] = 1;
-      obj["post"]     = "This is the second post in the first thread that was made";
+  it("Create thread #1 in Introductions", function(done){
+    var obj = {};
+    obj["userId"]      = 1;
+    obj["token"]       = token1;
+    obj["boardId"]     = 1;
+    obj["threadTitle"] = "Hello everyone!";
+    obj["post"]        = "I am new here, and this post is also the very first post for a test case.";
 
-      client.emit("create-post", obj);
-      client.on("create-post", function(msg){
-        assert(msg);
-        done();
-      });
+    client.emit("create-thread", obj);
+    client.on("create-thread", function(msg){
+      assert(msg);
+      done();
+    });
+  });
+
+  it("Create thread #2 in Introductions", function(done){
+    var obj = {};
+    obj["userId"]      = 2;
+    obj["token"]       = token2;
+    obj["boardId"]     = 1;
+    obj["threadTitle"] = "Ben here";
+    obj["post"]        = "This account's name is Ben";
+
+    client.emit("create-thread", obj);
+    client.on("create-thread", function(msg){
+      assert(msg);
+      done();
+    });
+  });
+
+  it("Make a post Introductions thread #1", function(done){
+    var obj = {};
+    obj["userId"]   = 1;
+    obj["token"]    = token1;
+    obj["threadId"] = 1;
+    obj["post"]     = "This is the second post in the first thread that was made";
+
+    client.emit("create-post", obj);
+    client.on("create-post", function(msg){
+      assert(msg);
+      done();
+    });
+  });
+
+  it("Make a post Introductions thread #2", function(done){
+    var obj = {};
+    obj["userId"]   = 1;
+    obj["token"]    = token1;
+    obj["threadId"] = 2;
+    obj["post"]     = "Hello there Ben, my name is Alex. Nice to meet you!";
+
+    client.emit("create-post", obj);
+    client.on("create-post", function(msg){
+      assert(msg);
+      done();
+    });
+  });
+
+  it("Make a post Introductions thread #2", function(done){
+    var obj = {};
+    obj["userId"]   = 2;
+    obj["token"]    = token2;
+    obj["threadId"] = 2;
+    obj["post"]     = "Hey thanks Alex.";
+
+    client.emit("create-post", obj);
+    client.on("create-post", function(msg){
+      assert(msg);
+      done();
     });
   });
 
   it("With an invalid login, try to create a board", function(done){
     con.query("SELECT token FROM users WHERE user_id=1", function(err, rows){
       var obj = {};
-      obj["userId"]    = 2;
-      obj["token"]     = token;
+      obj["userId"]    = 1;
+      obj["token"]     = "BAD_TOKEN";
       obj["boardName"] = "Introductions";
       obj["boardDesc"] = "Introduce yourself here";
 
@@ -200,8 +285,8 @@ describe("Running all tests", function (){
   it("With an invalid login, try to create a thread", function(done){
     con.query("SELECT token FROM users WHERE user_id=1", function(err, rows){
       var obj = {};
-      obj["userId"]      = 2;
-      obj["token"]       = token;
+      obj["userId"]      = 1;
+      obj["token"]       = "BAD_TOKEN";
       obj["boardId"]     = 1;
       obj["threadTitle"] = "Hello everyone!";
       obj["post"]        = "I am new here, and this post is also the very first post for a test case.";
@@ -217,8 +302,8 @@ describe("Running all tests", function (){
   it("With an invalid login, try to make a post", function(done){
     con.query("SELECT token FROM users WHERE user_id=1", function(err, rows){
       var obj = {};
-      obj["userId"]   = 2;
-      obj["token"]    = token;
+      obj["userId"]   = 1;
+      obj["token"]    = "BAD_TOKEN";
       obj["threadId"] = 1;
       obj["post"]     = "This is the second post in the first thread that was made";
 
