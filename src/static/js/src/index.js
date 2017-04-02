@@ -39,6 +39,7 @@ function Post(){
 }
 
 var socket = io();
+var animationLock = false;
 
 socket.on("post", function(msg){
   console.log(msg);
@@ -55,71 +56,93 @@ socket.on("fetch-boards-old", function(msg){
   // history.pushState(null, null, msg);
 });
 
+var navLocation = 1;
+
+function REEEEEEEEE(){
+  if(navLocation == 1){
+    // $("#board-index").html("<div style='width:810px'></div>");
+    $("#threads").html("<div style='width:810px'></div>");
+    $("#posts").html("<div style='width:810px'></div>");
+  }else if(navLocation == 2){
+    $("#board-index").html("<div style='width:810px'></div>");
+    // $("#threads").html("<div style='width:810px'></div>");
+    $("#posts").html("<div style='width:810px'></div>");
+  }else if(navLocation == 3){
+    $("#board-index").html("<div style='width:810px'></div>");
+    $("#threads").html("<div style='width:810px'></div>");
+    // $("#posts").html("<div style='width:810px'></div>");
+  }
+  animationLock = false;
+}
+
 socket.on("fetch-boards", function(msg){
   $("#board-index").html(msg);
+  navLocation = 1;
 
   $("#forum-container").animate({
-    left: "+=810"
-  }, 300);
-
-  // history.pushState(null, null, msg);
+    left: "0"
+  }, 300, function(){
+    REEEEEEEEE(navLocation);
+  });
 });
 
 socket.on("fetch-threads", function(msg){
-  // Determine if we're currently on Boards or Posts
-  // and move the interface left or right accordingly
   $("#threads").html(msg);
+  navLocation = 2;
 
    $("#forum-container").animate({
-    left: "-=810"
-  }, 300);
-
-  // history.pushState(null, null, msg);
-});
-
-socket.on("fetch-threads-2", function(msg){
-  // Determine if we're currently on Boards or Posts
-  // and move the interface left or right accordingly
-  $("#threads").html(msg);
-
-   $("#forum-container").animate({
-    left: "+=810"
-  }, 300);
-
-  // history.pushState(null, null, msg);
+    left: "-810"
+  }, 300, function(){
+    REEEEEEEEE(navLocation);
+  });
 });
 
 socket.on("fetch-posts", function(msg){
   $("#posts").html(msg);
+  navLocation = 3;
 
    $("#forum-container").animate({
-    left: "-=810"
-  }, 300);
-
-  // history.pushState(null, null, msg);
+    left: "-1620"
+  }, 300, function(){
+    REEEEEEEEE(navLocation);
+  });
 });
 
 function BindBoard(){
   $(".board").click(function(event){
+    if(animationLock)
+      return;
+    animationLock = true;
     var boardId = $(this).attr("board-id");
+    // history.pushState(null, null, boardId);
     socket.emit("fetch-threads", boardId, new Date().getTimezoneOffset());
   });
 }
 
 function BindThread(){
   $(".thread").click(function(event){
+    if(animationLock)
+      return;
+    animationLock = true;
     var threadId = $(this).attr("thread-id");
+    // history.pushState(null, null, threadId);
     socket.emit("fetch-posts", threadId, new Date().getTimezoneOffset());
   });
 
   $(".back").click(function(event){
+    if(animationLock)
+      return;
+    animationLock = true;
     socket.emit("fetch-boards");
   });
 }
 
 function BindPost(){
   $(".back").click(function(event){
+    if(animationLock)
+      return;
+    animationLock = true;
     var boardId = $(this).attr("board-id");
-    socket.emit("fetch-threads", boardId, new Date().getTimezoneOffset(), true);
+    socket.emit("fetch-threads", boardId, new Date().getTimezoneOffset());
   });
 }

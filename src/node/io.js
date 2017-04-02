@@ -166,7 +166,7 @@ io.on("connection", function(socket){
     });
   });
 
-  socket.on("fetch-threads", function(msg, tz, testing = false){
+  socket.on("fetch-threads", function(msg, tz){
     var sql = "SELECT * FROM threads WHERE board_id = ?";
     var args = [msg];
     con.query(sql, args, function(err, rows){
@@ -176,12 +176,7 @@ io.on("connection", function(socket){
       }
 
       ejs.renderFile("./views/test2.ejs", {rows: rows}, function(err, html){
-        console.log(testing);
-        if(testing){
-          socket.emit("fetch-threads-2", html);
-        }else{
-          socket.emit("fetch-threads", html);
-        }
+        socket.emit("fetch-threads", html);
       });
     });
   });
