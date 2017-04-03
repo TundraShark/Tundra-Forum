@@ -1,3 +1,4 @@
+// https://github.com/js-cookie/js-cookie
 var token = Cookies.get("token");
 console.log("YOUR COOKIE");
 console.log(token);
@@ -38,6 +39,7 @@ function Post(){
 }
 
 var socket = io();
+var animationLock = false;
 
 socket.on("post", function(msg){
   console.log(msg);
@@ -49,4 +51,98 @@ socket.on("bad-auth", function(msg){
   alert(msg);
 });
 
-// https://github.com/js-cookie/js-cookie
+socket.on("fetch-boards-old", function(msg){
+  $("#board-index").html(msg);
+  // history.pushState(null, null, msg);
+});
+
+var navLocation = 1;
+
+function REEEEEEEEE(){
+  if(navLocation == 1){
+    // $("#board-index").html("<div style='width:33%'></div>");
+    $("#threads").html("<div style='width:33%'></div>");
+    $("#posts").html("<div style='width:33%'></div>");
+  }else if(navLocation == 2){
+    $("#board-index").html("<div style='width:33%'></div>");
+    // $("#threads").html("<div style='width:33%'></div>");
+    $("#posts").html("<div style='width:33%'></div>");
+  }else if(navLocation == 3){
+    $("#board-index").html("<div style='width:33%'></div>");
+    $("#threads").html("<div style='width:33%'></div>");
+    // $("#posts").html("<div style='width:33%'></div>");
+  }
+  animationLock = false;
+}
+
+socket.on("fetch-boards", function(msg){
+  $("#board-index").html(msg);
+  navLocation = 1;
+
+  $("#forum-container").animate({
+    left: "0"
+  }, 300, function(){
+    REEEEEEEEE(navLocation);
+  });
+});
+
+socket.on("fetch-threads", function(msg){
+  $("#threads").html(msg);
+  navLocation = 2;
+
+   $("#forum-container").animate({
+    left: "-99%"
+  }, 300, function(){
+    REEEEEEEEE(navLocation);
+  });
+});
+
+socket.on("fetch-posts", function(msg){
+  $("#posts").html(msg);
+  navLocation = 3;
+
+   $("#forum-container").animate({
+    left: "-198%"
+  }, 300, function(){
+    REEEEEEEEE(navLocation);
+  });
+});
+
+function BindBoard(){
+  $(".board").click(function(event){
+    if(animationLock)
+      return;
+    animationLock = true;
+    var boardId = $(this).attr("board-id");
+    // history.pushState(null, null, boardId);
+    socket.emit("fetch-threads", boardId, new Date().getTimezoneOffset());
+  });
+}
+
+function BindThread(){
+  $(".thread").click(function(event){
+    if(animationLock)
+      return;
+    animationLock = true;
+    var threadId = $(this).attr("thread-id");
+    // history.pushState(null, null, threadId);
+    socket.emit("fetch-posts", threadId, new Date().getTimezoneOffset());
+  });
+
+  $(".back").click(function(event){
+    if(animationLock)
+      return;
+    animationLock = true;
+    socket.emit("fetch-boards");
+  });
+}
+
+function BindPost(){
+  $(".back").click(function(event){
+    if(animationLock)
+      return;
+    animationLock = true;
+    var boardId = $(this).attr("board-id");
+    socket.emit("fetch-threads", boardId, new Date().getTimezoneOffset());
+  });
+}

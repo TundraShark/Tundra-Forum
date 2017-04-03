@@ -1,0 +1,20 @@
+<div class="back" board-id=<%= rows[0]["board_id"] %>>Back</div>
+<% for(var i = 0; i < rows.length; i++){ %>
+<div class="post" post-id=<%= rows[i]["post_id"] %>>
+  <div class="user">
+    <div class="name"><%= rows[i]["name"] %></div>
+    <div class="title"><%= rows[i]["title"] %></div>
+    <div class="avatar">
+      <img src="/img/avatars/<%= rows[i]["user_id"] %>.png">
+    </div>
+    <div class="awards">Awards: TBD</div>
+  </div>
+  <div class="content">
+    <div class="post-date"><%= rows[i]["post_date"] %></div>
+    <div class="post-content"><%= rows[i]["post"] %></div>
+  </div>
+</div>
+<% } %>
+</div>
+
+<script>BindPost()</script>

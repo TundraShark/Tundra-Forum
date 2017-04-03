@@ -1,0 +1,32 @@
+<div class="category"> <!-- I will need to create a table that holds categories -->
+  <div class="title">❧ The New Pipeline</div>
+  <div class="thingy">
+    <% for(var i = 0; i < rows.length; i++){ %>
+    <div class="board" board-id=<%= rows[i]["board_id"] %>>
+      <div class="icon">
+        <!-- <div style="background-image: url(/img/boards/<%= rows[i]["board_id"] %>.png)"></div> -->
+        <div style="background-image: url(/css/img/board-unread.png)"></div>
+      </div>
+      <div class="info">
+        <div class="inner">
+          <a class="name"><%= rows[i]["name"] %></a>
+          <div class="description"><%= rows[i]["description"] %></div>
+        </div>
+      </div>
+      <div class="last-poster">
+        <div class="inner">
+          <div class="TBD">Last Poster: TBD</div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="inner">
+          <div class="thread-count"><%= rows[i]["thread_count"] %> topics</div>
+          <div class="post-count"><%= rows[i]["post_count"] %> replies</div>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<script>BindBoard()</script>

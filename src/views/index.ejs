@@ -10,11 +10,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>NodeJS Example</title>
+    <title>Tundra Forum</title>
     <meta charset="utf-8">
     <meta name="description"  content="This is the index">
     <meta name="author"       content="Tundra Fizz">
-    <link rel="shortcut icon" href="/img/icon.jpg">
+    <link rel="shortcut icon" href="/img/icon/icon.jpg">
     <link rel="stylesheet"    href="/css/theme.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script src="/js/lib/socket.io.js"></script>
@@ -23,6 +23,55 @@
   </head>
 
   <body>
+    <div class="header">
+      <div class="main-width">
+        <div class="logo"></div>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <div class="main-width">
+        <div class="nav-link active">Forum</div>
+        <div class="nav-link">Members</div>
+        <div class="nav-link">TBD</div>
+        <div class="nav-link view-new-content">View New Content</div>
+      </div>
+    </div>
+    <div class="nav-bar-trim"></div>
+    <div class="triangles"></div>
+
+    <div id="forum-window">
+      <div id="forum-container">
+        <div id="board-index"></div>
+        <div id="threads"></div>
+        <div id="posts"></div>
+      </div>
+    </div>
+
+    <div class="testing">
+      <div class="main-width">
+        <div class="statistics">
+          <div class="stat-links">
+            <a>Staff</a>
+            <a>Today's Top Posters</a>
+            <a>Top Posters</a>
+          </div>
+          <div class="head">?? users are online</div>
+          <div class="online-list">TBD</div>
+          <div class="head">Members online today: ??</div>
+          <div class="online-list">TBD</div>
+        </div>
+      </div>
+
+      <div class="triangles"></div>
+
+      <div class="footer">
+        <div class="main-width">
+          <a class="version" href="https://github.com/TundraFizz/Tundra-Forum" target="_blank">Tundra Forum Software <%= version %></a>
+        </div>
+      </div>
+    </div>
+
+    <!--
     <div>
       <input style="display: inline-block;" id="name" type="text">
       <div onselectstart="return false;" style="display: inline-block;" class="button" onclick="SignUp()">Sign Up</div>
@@ -38,8 +87,8 @@
     <hr>
 
     <input style="display: inline-block;" id="message" type="text"><div style="display: inline-block;" class="button" onclick="Post()">Post</div>
+    -->
 
-    <div id="msg-box" class="content">
-    </div>
+    <!-- <div id="msg-box" class="content"></div> -->
   </body>
 </html>

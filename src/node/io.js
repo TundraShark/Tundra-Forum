@@ -1,8 +1,15 @@
-var io    = require("../server.js").io;
-var mysql = require("mysql");
-var fs    = require("fs");
+var io     = require("../server.js").io;
+var mysql  = require("mysql");
+var ejs    = require("ejs");
+var moment = require("moment");
+var fs     = require("fs");
+
+// TODO!
+// Google the function of ejs.renderFile()
+// and check what things the option parameter can do!
 
 var players = {};
+var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -14,7 +21,7 @@ var con = mysql.createConnection({
 function Authenticate(msg, perm = 0){return new Promise((done) => {
   var userId = msg["userId"];
   var token  = msg["token"];
-  var sql    = "SELECT permission FROM users WHERE ? AND ?;";
+  var sql    = "SELECT permission FROM users WHERE ? AND ?";
   var args   = [{user_id: userId}, {token: token}];
   con.query(sql, args, function(err, rows){
     if(rows.length){
@@ -31,6 +38,10 @@ function Authenticate(msg, perm = 0){return new Promise((done) => {
 
 io.on("connection", function(socket){
   var ip = socket.conn.remoteAddress;
+  var player = {};
+  player.num = 1;
+  player.id  = 1;
+  players[socket.id] = player;
 
   function CreateBoard(msg, res){return new Promise((done) => {
     if(res){
@@ -53,9 +64,10 @@ io.on("connection", function(socket){
       var boardId     = msg["boardId"];
       var threadTitle = msg["threadTitle"];
       var post        = msg["post"];
-      var newThread   = {board_id: boardId, author: userId, title: threadTitle, last_poster_id: userId};
+      var time        = moment.utc().format("YYYY-MM-DD HH:mm:ss");
+      var newThread   = {board_id: boardId, author: userId, last_poster_id: userId, last_poster_date: time, post_date: time, title: threadTitle};
       con.query("INSERT INTO threads SET ?", newThread, function(err, res){
-        var newPost = {thread_id: res.insertId, author: userId, post: post, first_post: 1, ip_address: ip};
+        var newPost = {thread_id: res.insertId, author: userId, post: post, first_post: 1, ip_address: ip, post_date: time};
         con.query("INSERT INTO posts SET ?", newPost, function(err){
           con.query("UPDATE boards SET thread_count = thread_count + 1, post_count = post_count + 1 WHERE board_id = ?", boardId, function(err){
             socket.emit("create-thread", true);
@@ -74,7 +86,8 @@ io.on("connection", function(socket){
       var userId   = msg["userId"];
       var threadId = msg["threadId"];
       var post     = msg["post"];
-      var newPost  = {thread_id: threadId, author: userId, post: post, ip_address: ip};
+      var time     = moment.utc().format("YYYY-MM-DD HH:mm:ss");
+      var newPost  = {thread_id: threadId, author: userId, post: post, ip_address: ip, post_date: time};
       con.query("INSERT INTO posts SET ?", newPost, function(err){
         con.query("UPDATE threads SET post_count = post_count + 1 WHERE thread_id = ?", threadId, function(err){
           con.query("UPDATE boards SET post_count = post_count + 1 WHERE board_id = (SELECT board_id FROM threads WHERE thread_id = ?)", threadId, function(err){
@@ -89,26 +102,41 @@ io.on("connection", function(socket){
     }
   })};
 
-  var player = {};
-  player.num = 1;
-  player.id  = 1;
-  players[socket.id] = player;
+  function SetTitle(msg, res){return new Promise((done) => {
+    if(res){
+      var userId = msg["userId"];
+      var title  = msg["title"];
+      var args   = [{title: title}, {user_id: userId}];
+      con.query("UPDATE users SET ? WHERE ?", args, function(err){
+        socket.emit("set-title", true);
+        done();
+      });
+    }else{
+      socket.emit("set-title", false);
+      done();
+    }
+  })};
 
-  // io.to(socket.id).emit("custom", "Your ID is: " + idCounter);
+  function FormatDateShort(date, tz){
+    // Convert the dates into the user's local time
+    date.setTime(date.getTime() + (-tz * 60 * 1000));
+    return date.getDate() + " " + monthNames[date.getMonth()] + " " + date.getFullYear();
+  }
 
-  socket.on("disconnect", function(){
-    delete players[socket.id];
+  function FormatDateLong(date, tz){
+    // Convert the dates into the user's local time
+    date.setTime(date.getTime() + (-tz * 60 * 1000));
+    var hours = date.getHours();
+    var ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12; // Convert from 24-hour to 12-hour format
+    hours = hours ? hours : 12; // Set hours to 12 if it's 0
+    return date.getDate() + " " + monthNames[date.getMonth()] + " " + date.getFullYear() + " - " + hours + ":" + date.getMinutes() + " " + ampm;
+  }
+
+  socket.on("set-title", function(msg){
+    Authenticate(msg)
+    .then((res) => SetTitle(msg, res));
   });
-
-  // Send to everyone but the user that just made the connection
-  socket.broadcast.emit("hi", "someone else joined");
-
-  // Do this when the server receives a message titled, "message_c2s"
-  // socket.on("message_c2s", function(msg){
-  //   io.emit("message_s2c", msg);
-
-  //   if(msg == "stop") stopServer = true;
-  // });
 
   socket.on("create-board", function(msg){
     Authenticate(msg, 100)
@@ -124,6 +152,58 @@ io.on("connection", function(socket){
     Authenticate(msg)
     .then((res) => CreatePost(msg, res));
   });
+
+  socket.on("disconnect", function(){
+    delete players[socket.id];
+  });
+
+  socket.on("fetch-boards", function(){
+    var sql = "SELECT * FROM boards";
+    con.query(sql, function(err, rows){
+      ejs.renderFile("./views/test.ejs", {rows: rows}, function(err, html){
+        socket.emit("fetch-boards", html);
+      });
+    });
+  });
+
+  socket.on("fetch-threads", function(msg, tz){
+    var sql = "SELECT * FROM threads WHERE board_id = ?";
+    var args = [msg];
+    con.query(sql, args, function(err, rows){
+      for(var i = 0; i < rows.length; i++){
+        rows[i]["last_poster_date"] = FormatDateShort(rows[i]["last_poster_date"], tz);
+        rows[i]["post_date"]        = FormatDateShort(rows[i]["post_date"], tz);
+      }
+
+      ejs.renderFile("./views/test2.ejs", {rows: rows}, function(err, html){
+        socket.emit("fetch-threads", html);
+      });
+    });
+  });
+
+  socket.on("fetch-posts", function(msg, tz){
+    var sql = "SELECT t.board_id, p.*, u.user_id, u.name, u.title FROM posts p JOIN users u ON author = user_id JOIN threads t ON p.thread_id = t.thread_id WHERE p.thread_id = ?";
+    var args = [msg];
+    con.query(sql, args, function(err, rows){
+      for(var i = 0; i < rows.length; i++){
+        rows[i]["post_date"] = FormatDateLong(rows[i]["post_date"], tz);
+      }
+
+      ejs.renderFile("./views/test3.ejs", {rows: rows}, function(err, html){
+        socket.emit("fetch-posts", html);
+      });
+    });
+  });
+
+  // Get the boards listing for the user
+  // NOTE: This depends on what the URL is because I want people
+  //       to be able to go to a specific board or thread
+  var sql = "SELECT * FROM boards";
+  con.query(sql, function(err, rows){
+    ejs.renderFile("./views/test.ejs", {rows: rows}, function(err, html){
+      socket.emit("fetch-boards-old", html);
+    });
+  });
 });
 
 /*
@@ -135,7 +215,7 @@ io.on("connection", function(socket){
   ===== NOTE =====
   These two do the same things
   -> io.to(socket.id).emit
-  -> socket.emit                                                   
+  -> socket.emit
 
   io.to(socket.id).emit("custom", "Too many people!"); // Send to a specific person
   socket.disconnect(socket.id);                                                     */
