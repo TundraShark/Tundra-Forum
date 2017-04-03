@@ -134,38 +134,119 @@ a:hover {
 #forum-window {
   overflow: hidden;
   margin: 0 auto;
-  width: 815px;
+  width: 70%;
+  min-width: 830px;
+
+  /*width: 815px;*/ /* <-- Should I use 830 or this? */
+  /*margin: auto;*/
 }
 
 #forum-container {
   position: relative;
-  width: 2600px;
+  width: 300%;
+  /*width: 2600px;*/
 }
 
 #board-index {
   position: relative;
   display: inline-block;
   vertical-align: top;
+  font-size: 12px;
+  color: #333;
+  width: 33%;
 
-  .board {
-    border: 1px solid;
-    height: 60px;
-    padding: 4px;
-    width: 800px;
+  .category {
+    /*color: black;*/
+    /*color: black;*/
+  }
 
-    > div {
-      display: inline-block;
-      float: left;
-      width: 150px;
-      height: 100%;
-    }
+  .title {
+    font-weight: bold;
+    font-variant: small-caps;
+    letter-spacing: 1px;
+    background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/maintitle.png) repeat-x 0px -12px;
+    color: rgba(0,0,0,0.7);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    padding: 6px 10px 9px;
+    font-size: 16px;
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    border-radius: 4px 4px 0 0;
+    -webkit-box-shadow: inset 0px 1px 0 #e8dbb6;
+    -moz-box-shadow: inset 0px 1px 0 #e8dbb6;
+    box-shadow: inset 0px 1px 0 #e8dbb6;
+    border-width: 1px 1px 0 1px;
+    border-left-color: #9c906f;
+    border-right-color: #9c906f;
+    border-top-color: #c2b38a;
+    border-style: solid;
+    font-weight: bold;
+    font-variant: small-caps;
+  }
 
-    .icon > div {
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
+  .thingy {
+    background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/ipsbox.png) repeat;
+    border: #9c906f 1px solid;
+    border-top: none;
+    padding: 0 9px 9px 9px;
+
+    .board {
+      background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/content_bg.png) repeat;
+      border: 1px solid;
+      height: 70px;
       width: 100%;
-      height: 100%;
+
+      > div {
+        display: inline-block;
+        height: 50px;
+        padding: 10px;
+        float: left;
+      }
+
+      .icon {
+        display: flex;
+        align-items: center;
+        width: 50px;
+
+        div {
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: contain;
+          width: 100%;
+          height: 100%;
+          cursor: not-allowed;
+        }
+      }
+
+      .info {
+        display: flex;
+        align-items: center;
+
+        .name {
+          font-weight: bold;
+          font-size: 15px;
+        }
+
+        .description {
+        }
+      }
+
+      .last-poster {
+        display: flex;
+        align-items: center;
+        float: right;
+      }
+
+      .stats {
+        display: flex;
+        align-items: center;
+        float: right;
+        text-align: right;
+
+        >div {
+        }
+      }
     }
   }
 }
@@ -174,49 +255,103 @@ a:hover {
   position: relative;
   display: inline-block;
   vertical-align: top;
+  width: 33%;
 
   .back {
     position: absolute;
-    border: 1px solid;
+    border: 1px solid black;
     width: 100px;
-    height: 30px;
-    top: -20px;
+    height: 20px;
+    left: 30%;
+    text-align: center;
+    background-color: cyan;
+    top: 6px;
   }
 
-  .thread {
-    border: 1px solid;
-    height: 50px;
-    padding: 4px;
-    width: 800px;
+  .thread-header {
+  }
 
-    > div {
-      display: inline-block;
-      float: left;
+  .title {
+    font-weight: bold;
+    font-variant: small-caps;
+    letter-spacing: 1px;
+    background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/maintitle.png) repeat-x 0px -12px;
+    color: rgba(0,0,0,0.7);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    padding: 6px 10px 9px;
+    font-size: 16px;
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    border-radius: 4px 4px 0 0;
+    -webkit-box-shadow: inset 0px 1px 0 #e8dbb6;
+    -moz-box-shadow: inset 0px 1px 0 #e8dbb6;
+    box-shadow: inset 0px 1px 0 #e8dbb6;
+    border-width: 1px 1px 0 1px;
+    border-left-color: #9c906f;
+    border-right-color: #9c906f;
+    border-top-color: #c2b38a;
+    border-style: solid;
+    font-weight: bold;
+    font-variant: small-caps;
+  }
+
+  .thingy {
+    background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/ipsbox.png) repeat;
+    border: #9c906f 1px solid;
+    border-top: none;
+    padding: 0 9px 9px 9px;
+
+    .thread {
+      background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/content_bg.png) repeat;
+      border: 1px solid;
+      height: 70px;
+      width: 100%;
+
+      > div {
+        display: inline-block;
+        height: 50px;
+        padding: 10px;
+        float: left;
+      }
+
+      .icon {
+
+      };
+
+      .info {
+        display: flex;
+        align-items: center;
+
+        .thread-title {
+          font-size: 15px;
+        }
+
+        .author {
+          display: inline-block;
+        }
+
+        .post-date {
+          display: inline-block;
+        }
+      }
+
+      .last-poster {
+        display: flex;
+        align-items: center;
+        float: right;
+      }
+
+      .stats {
+        display: flex;
+        align-items: center;
+        float: right;
+        text-align: right;
+
+        >div {
+        }
+      }
     }
-
-    .icon {
-      width: 20px;
-      height: 100%;
-      background-color: cyan;
-    };
-
-    .info {
-      width: 380px;
-      height: 100%;
-      background-color: green;
-    };
-
-    .stats {
-      width: 100px;
-      height: 100%;
-      background-color: yellow;
-    };
-
-    .last-poster {
-      width: 200px;
-      height: 100%;
-      background-color: red;
-    };
   }
 }
 
@@ -224,20 +359,24 @@ a:hover {
   position: relative;
   display: inline-block;
   vertical-align: top;
+  width: 33%;
 
   .back {
     position: absolute;
     border: 1px solid;
     width: 100px;
-    height: 30px;
-    top: -20px;
+    height: 16px;
+    left: 360px;
+    top: 4px;
+    background-color: cyan;
+    text-align: center;
   }
 
   .post {
     border: 1px solid;
     height: 200px;
     padding: 4px;
-    width: 800px;
+    width: 100%;
 
     > div {
       display: inline-block;

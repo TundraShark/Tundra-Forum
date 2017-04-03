@@ -60,17 +60,17 @@ var navLocation = 1;
 
 function REEEEEEEEE(){
   if(navLocation == 1){
-    // $("#board-index").html("<div style='width:810px'></div>");
-    $("#threads").html("<div style='width:810px'></div>");
-    $("#posts").html("<div style='width:810px'></div>");
+    // $("#board-index").html("<div style='width:33%'></div>");
+    $("#threads").html("<div style='width:33%'></div>");
+    $("#posts").html("<div style='width:33%'></div>");
   }else if(navLocation == 2){
-    $("#board-index").html("<div style='width:810px'></div>");
-    // $("#threads").html("<div style='width:810px'></div>");
-    $("#posts").html("<div style='width:810px'></div>");
+    $("#board-index").html("<div style='width:33%'></div>");
+    // $("#threads").html("<div style='width:33%'></div>");
+    $("#posts").html("<div style='width:33%'></div>");
   }else if(navLocation == 3){
-    $("#board-index").html("<div style='width:810px'></div>");
-    $("#threads").html("<div style='width:810px'></div>");
-    // $("#posts").html("<div style='width:810px'></div>");
+    $("#board-index").html("<div style='width:33%'></div>");
+    $("#threads").html("<div style='width:33%'></div>");
+    // $("#posts").html("<div style='width:33%'></div>");
   }
   animationLock = false;
 }
@@ -91,7 +91,7 @@ socket.on("fetch-threads", function(msg){
   navLocation = 2;
 
    $("#forum-container").animate({
-    left: "-810"
+    left: "-99%"
   }, 300, function(){
     REEEEEEEEE(navLocation);
   });
@@ -102,7 +102,7 @@ socket.on("fetch-posts", function(msg){
   navLocation = 3;
 
    $("#forum-container").animate({
-    left: "-1620"
+    left: "-198%"
   }, 300, function(){
     REEEEEEEEE(navLocation);
   });

@@ -1,7 +1,8 @@
-var app    = require("../server.js").app;
-var mysql  = require("mysql");
-var fs     = require("fs");
-var crypto = require("crypto");
+var app     = require("../server.js").app;
+var mysql   = require("mysql");
+var fs      = require("fs");
+var crypto  = require("crypto");
+var version = require("../../package.json").version;
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -69,7 +70,7 @@ app.post("/sign-up", function(req, res){
     }else{
       var newUser = {name: name, password_content: passwordContent, password_tag: passwordTag, password_iv: passwordIv, email: email};
       con.query("INSERT INTO users SET ?", newUser, function(err){
-        res.json({"msg": `Account created ${name}`, "err": 0});  
+        res.json({"msg": `Account created ${name}`, "err": 0});
       });
     }
   });
@@ -128,7 +129,7 @@ app.post("/logout", function(req, res){
 });
 
 app.get("/", function(req, res){
-  res.render("index.ejs");
+  res.render("index.ejs", {version: version});
 });
 
 app.use(function(req, res){
