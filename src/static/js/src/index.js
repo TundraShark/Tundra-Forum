@@ -59,15 +59,15 @@ socket.on("fetch-boards-old", function(msg){
 var navLocation = 1;
 
 function REEEEEEEEE(){
-  if(navLocation == 1){
+  if(navLocation === 1){
     // $("#board-index").html("<div style='width:33%'></div>");
     $("#threads").html("<div style='width:33%'></div>");
     $("#posts").html("<div style='width:33%'></div>");
-  }else if(navLocation == 2){
+  }else if(navLocation === 2){
     $("#board-index").html("<div style='width:33%'></div>");
     // $("#threads").html("<div style='width:33%'></div>");
     $("#posts").html("<div style='width:33%'></div>");
-  }else if(navLocation == 3){
+  }else if(navLocation === 3){
     $("#board-index").html("<div style='width:33%'></div>");
     $("#threads").html("<div style='width:33%'></div>");
     // $("#posts").html("<div style='width:33%'></div>");
@@ -110,8 +110,9 @@ socket.on("fetch-posts", function(msg){
 
 function BindBoard(){
   $(".board-title").click(function(event){
-    if(animationLock)
+    if(animationLock){
       return;
+    }
     animationLock = true;
     var boardId = $(this).attr("board-id");
     // history.pushState(null, null, boardId);

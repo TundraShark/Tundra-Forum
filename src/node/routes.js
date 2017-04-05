@@ -101,7 +101,7 @@ app.post("/login", function(req, res){
 
       // Check if the password was invalid
       if(Decrypt(encryptedData, password, passwordIv) === false){
-        res.json({"msg": `Invalid username or password`, "err": 1});
+        res.json({"msg": "Invalid username or password", "err": 1});
         return;
       }
 
