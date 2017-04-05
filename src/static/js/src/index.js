@@ -109,7 +109,7 @@ socket.on("fetch-posts", function(msg){
 });
 
 function BindBoard(){
-  $(".board").click(function(event){
+  $(".board-title").click(function(event){
     if(animationLock)
       return;
     animationLock = true;
@@ -120,7 +120,7 @@ function BindBoard(){
 }
 
 function BindThread(){
-  $(".thread").click(function(event){
+  $(".thread-title").click(function(event){
     if(animationLock)
       return;
     animationLock = true;

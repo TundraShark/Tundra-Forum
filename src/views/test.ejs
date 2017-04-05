@@ -3,14 +3,14 @@
   <div class="thingy">
     <div class="thingy-2">
       <% for(var i = 0; i < rows.length; i++){ %>
-      <div class="board" board-id=<%= rows[i]["board_id"] %>>
+      <div class="board">
         <div class="icon">
           <!-- <div style="background-image: url(/img/boards/<%= rows[i]["board_id"] %>.png)"></div> -->
           <div style="background-image: url(/css/img/board-unread.png)"></div>
         </div>
         <div class="info">
           <div class="inner">
-            <a class="name"><%= rows[i]["name"] %></a>
+            <a class="board-title" board-id=<%= rows[i]["board_id"] %>><%= rows[i]["name"] %></a>
             <div class="description"><%= rows[i]["description"] %></div>
           </div>
         </div>
