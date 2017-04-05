@@ -53,6 +53,7 @@ body {
 a {
   color: #80a15a;
   text-decoration: none;
+  cursor: pointer;
 }
 
 a:hover {
@@ -191,9 +192,13 @@ a:hover {
     border-top: none;
     padding: 0 9px 9px 9px;
 
+    .thingy-2{
+      border: 1px solid rgba(0,0,0,0.3);
+      box-shadow: 0 0 3px #fff;
+
     .board {
       background: #d5c594 url(img/bg-light.png) repeat;
-      border: 1px solid;
+      border-bottom: 1px solid #d6d2bb;
       height: 70px;
       width: 100%;
 
@@ -248,6 +253,7 @@ a:hover {
         }
       }
     }
+  }
   }
 }
 

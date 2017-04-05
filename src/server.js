@@ -1,4 +1,4 @@
-process.chdir("./src");                           // Sets working directory to the code's source directory
+// process.chdir("./src");                           // Sets working directory to the code's source directory
 var express    = require("express");              // Express
 var bodyParser = require("body-parser");          // Allows you to read POST data
 var sass       = require("node-sass-middleware"); // SASS
