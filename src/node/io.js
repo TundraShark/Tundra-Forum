@@ -14,9 +14,26 @@ var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept"
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "Fizz",
   database: "tundra_forum"
 });
+
+// fs.readFile("../config.json", "utf-8", (error, data) => {
+//   if(error){
+//     console.log(error);
+//     return;
+//   }
+
+//   data = JSON.parse(data);
+//   console.log(data);
+
+//   con = mysql.createConnection({
+//     host    : data["host"],
+//     user    : data["user"],
+//     password: data["password"],
+//     database: data["database"]
+//   });
+// });
 
 function Authenticate(msg, perm = 0){return new Promise((done) => {
   var userId = msg["userId"];
@@ -37,11 +54,17 @@ function Authenticate(msg, perm = 0){return new Promise((done) => {
 });}
 
 io.on("connection", function(socket){
-  var ip = socket.conn.remoteAddress;
-  var player = {};
+  // Getting the IP address is currently broken on Socket.IO version 2.0.3
+  // I need to wait for a patch in order to properly get the IP address
+  // var ip = socket.request.connection._peername.address;
+  // Until then, just set the IP address to 127.0.0.1
+  var ip = "127.0.0.1";
+  var player = {}
   player.num = 1;
   player.id  = 1;
   players[socket.id] = player;
+  console.log("New connection:");
+  console.log(ip);
 
   function CreateBoard(msg, res){return new Promise((done) => {
     if(res){
@@ -158,6 +181,7 @@ io.on("connection", function(socket){
   });
 
   socket.on("fetch-boards", function(){
+    console.log("FETCHING THE BOARDS");
     var sql = "SELECT * FROM boards";
     con.query(sql, function(err, rows){
       ejs.renderFile("./views/test.ejs", {rows: rows}, function(err, html){
@@ -195,9 +219,13 @@ io.on("connection", function(socket){
     });
   });
 
+  // socket.emit("test", "REEEEEEEEEE");
+  // socket.emit("fetch-boards-old", "REEEEEEEEEE");
+
   // Get the boards listing for the user
   // NOTE: This depends on what the URL is because I want people
   //       to be able to go to a specific board or thread
+
   var sql = "SELECT * FROM boards";
   con.query(sql, function(err, rows){
     ejs.renderFile("./views/test.ejs", {rows: rows}, function(err, html){
