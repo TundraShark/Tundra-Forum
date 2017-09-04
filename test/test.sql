@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `tundra_forum`;
+CREATE DATABASE IF NOT EXISTS `tundra_forum`;
 USE `tundra_forum`;
 
 DROP TABLE IF EXISTS `users`;
@@ -66,25 +66,6 @@ CREATE TABLE `posts` (
   CONSTRAINT `FK_posts_author` FOREIGN KEY (`author`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_posts_thread_id` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`thread_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `threads`;
-CREATE TABLE `threads` (
-  `thread_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `board_id` int(11) unsigned NOT NULL,
-  `author` int(11) unsigned NOT NULL,
-  `last_poster_id` int(11) NOT NULL,
-  `last_poster_date` datetime DEFAULT NULL,
-  `post_date` datetime DEFAULT NULL,
-  `title` varchar(100) NOT NULL,
-  `post_count` int(11) unsigned NOT NULL DEFAULT '1',
-  `closed` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`thread_id`),
-  KEY `IDX_board_id` (`board_id`),
-  KEY `IDX_threads_author` (`author`),
-  CONSTRAINT `FK_threads_author` FOREIGN KEY (`author`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_threads_board_id` FOREIGN KEY (`board_id`) REFERENCES `boards` (`board_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
