@@ -7,9 +7,26 @@ var version = require("../../package.json").version;
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "Fizz",
   database: "tundra_forum"
 });
+
+// fs.readFile("../config.json", "utf-8", (error, data) => {
+//   if(error){
+//     console.log(error);
+//     return;
+//   }
+
+//   data = JSON.parse(data);
+//   console.log(data);
+
+//   con = mysql.createConnection({
+//     host    : data["host"],
+//     user    : data["user"],
+//     password: data["password"],
+//     database: data["database"]
+//   });
+// });
 
 function Encrypt(password){
   var algorithm = "aes-256-gcm";
