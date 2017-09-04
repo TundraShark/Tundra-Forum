@@ -2,34 +2,36 @@
   <div class="back">Back</div> <!-- REMOVE THIS LATER, IT'S A DEBUG BUTTON -->
   <div class="title">❧ Thread Listing</div>
   <div class="thingy">
-    <% for(var i = 0; i < rows.length; i++){ %>
-    <div class="thread" thread-id=<%= rows[i]["thread_id"] %>>
-      <div class="icon"></div>
-      <div class="info">
-        <div class="inner">
-          <div>
-            <a class="thread-title"><%= rows[i]["title"] %></a>
+    <div class="thingy-2">
+      <% for(var i = 0; i < rows.length; i++){ %>
+      <div class="thread">
+        <div class="icon"></div>
+        <div class="info">
+          <div class="inner">
+            <div>
+              <a class="thread-title" thread-id=<%= rows[i]["thread_id"] %>><%= rows[i]["title"] %></a>
+            </div>
+            <div>
+              <div class="author">Started by <%= rows[i]["author"] %>,</div>
+              <div class="post-date"><%= rows[i]["post_date"] %></div>
+            </div>
           </div>
-          <div>
-            <div class="author">Started by <%= rows[i]["author"] %>,</div>
-            <div class="post-date"><%= rows[i]["post_date"] %></div>
+        </div>
+        <div class="last-poster">
+          <div class="inner">
+            <div class="last-poster-id"><%= rows[i]["last_poster_id"] %></div>
+            <div class="last-poster-date"><%= rows[i]["last_poster_date"] %></div>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="inner">
+            <div class="post-count">Posts: <%= rows[i]["post_count"] %></div>
+            <div class="view-count">Views: TBD</div>
           </div>
         </div>
       </div>
-      <div class="last-poster">
-        <div class="inner">
-          <div class="last-poster-id"><%= rows[i]["last_poster_id"] %></div>
-          <div class="last-poster-date"><%= rows[i]["last_poster_date"] %></div>
-        </div>
-      </div>
-      <div class="stats">
-        <div class="inner">
-          <div class="post-count">Posts: <%= rows[i]["post_count"] %></div>
-          <div class="view-count">Views: TBD</div>
-        </div>
-      </div>
+      <% } %>
     </div>
-    <% } %>
   </div>
 </div>
 

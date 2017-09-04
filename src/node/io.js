@@ -79,7 +79,7 @@ io.on("connection", function(socket){
       socket.emit("create-thread", false);
       done();
     }
-  })};
+  });}
 
   function CreatePost(msg, res){return new Promise((done) => {
     if(res){
@@ -100,7 +100,7 @@ io.on("connection", function(socket){
       socket.emit("create-post", false);
       done();
     }
-  })};
+  });}
 
   function SetTitle(msg, res){return new Promise((done) => {
     if(res){
@@ -115,7 +115,7 @@ io.on("connection", function(socket){
       socket.emit("set-title", false);
       done();
     }
-  })};
+  });}
 
   function FormatDateShort(date, tz){
     // Convert the dates into the user's local time

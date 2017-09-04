@@ -132,6 +132,19 @@ describe("Running all tests", function (){
     });
   });
 
+  it("Attempt to set a title for account #1 with a bad token", function(done){
+    var obj = {};
+    obj["userId"] = 1;
+    obj["token"]  = "BAD_TOKEN";
+    obj["title"]  = "Fizz Main";
+
+    client.emit("set-title", obj);
+    client.on("set-title", function(msg){
+      assert(!msg);
+      done();
+    });
+  });
+
   it("Set a title for account #1", function(done){
     var obj = {};
     obj["userId"] = 1;
@@ -312,6 +325,30 @@ describe("Running all tests", function (){
         assert(msg == false);
         done();
       });
+    });
+  });
+
+  it("Fetch boards", function(done){
+    client.emit("fetch-boards", 1, 0);
+    client.on("fetch-boards", function(msg){
+      assert(msg);
+      done();
+    });
+  });
+
+  it("Fetch threads", function(done){
+    client.emit("fetch-threads", 1, 0);
+    client.on("fetch-threads", function(msg){
+      assert(msg);
+      done();
+    });
+  });
+
+  it("Fetch posts", function(done){
+    client.emit("fetch-posts", 1, 0);
+    client.on("fetch-posts", function(msg){
+      assert(msg);
+      done();
     });
   });
 

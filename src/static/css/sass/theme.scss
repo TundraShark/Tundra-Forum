@@ -1,46 +1,3 @@
-/* Load custom fonts */
-@font-face {
-  font-family: "DroidSans";
-  src: url("../fonts/droid_sans.eot?#iefix") format("embedded-opentype"),
-       url("../fonts/droid_sans.ttf")        format("truetype");
-}
-
-/* Keyframes */
-@keyframes border-pulsate {
-  from {border-color: red; border-color: rgba(255, 0, 0, 0);}
-  to   {border-color: red; border-color: rgba(255, 0, 0, 1);}
-}
-
-/* 500+ */
-@media (min-width: 500px) {
-  .error-404-top {
-    font-size: 200px;
-  }
-
-  .error-404-bot {
-    font-size: 36px;
-  }
-
-  /*.content {
-    font-size: 16px;
-  }*/
-}
-
-/* 1-499 */
-/*@media (max-width: 499px) {
-  .error-404-top {
-    font-size: 100px;
-  }
-
-  .error-404-bot {
-    font-size: 20px;
-  }
-
-  .content {
-    font-size: 8px;
-  }
-}*/
-
 body {
   position: relative;
   display: block;
@@ -53,6 +10,7 @@ body {
 a {
   color: #80a15a;
   text-decoration: none;
+  cursor: pointer;
 }
 
 a:hover {
@@ -164,7 +122,7 @@ a:hover {
     font-weight: bold;
     font-variant: small-caps;
     letter-spacing: 1px;
-    background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/maintitle.png) repeat-x 0px -12px;
+    background: #d5c594 url(img/main-title.png) repeat-x 0px -12px;
     color: rgba(0,0,0,0.7);
     text-shadow: 0 1px 0 rgba(255,255,255,0.5);
     padding: 6px 10px 9px;
@@ -186,14 +144,18 @@ a:hover {
   }
 
   .thingy {
-    background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/ipsbox.png) repeat;
+    background: #d5c594 url(img/bg-med.png) repeat;
     border: #9c906f 1px solid;
     border-top: none;
     padding: 0 9px 9px 9px;
 
+    .thingy-2{
+      border: 1px solid rgba(0,0,0,0.3);
+      box-shadow: 0 0 3px #fff;
+
     .board {
-      background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/content_bg.png) repeat;
-      border: 1px solid;
+      background: #d5c594 url(img/bg-light.png) repeat;
+      border-bottom: 1px solid #d6d2bb;
       height: 70px;
       width: 100%;
 
@@ -223,7 +185,7 @@ a:hover {
         display: flex;
         align-items: center;
 
-        .name {
+        .board-title {
           font-weight: bold;
           font-size: 15px;
         }
@@ -248,6 +210,7 @@ a:hover {
         }
       }
     }
+  }
   }
 }
 
@@ -275,7 +238,7 @@ a:hover {
     font-weight: bold;
     font-variant: small-caps;
     letter-spacing: 1px;
-    background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/maintitle.png) repeat-x 0px -12px;
+    background: #d5c594 url(img/main-title.png) repeat-x 0px -12px;
     color: rgba(0,0,0,0.7);
     text-shadow: 0 1px 0 rgba(255,255,255,0.5);
     padding: 6px 10px 9px;
@@ -297,58 +260,62 @@ a:hover {
   }
 
   .thingy {
-    background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/ipsbox.png) repeat;
+    background: #d5c594 url(img/bg-med.png) repeat;
     border: #9c906f 1px solid;
     border-top: none;
     padding: 0 9px 9px 9px;
 
-    .thread {
-      background: #d5c594 url(http://nintendopipeline.net/forum/public/style_images/pipeline/skin_skyward/content_bg.png) repeat;
-      border: 1px solid;
-      height: 70px;
-      width: 100%;
+    .thingy-2 {
+      border: 1px solid rgba(0,0,0,0.3);
+      box-shadow: 0 0 3px #fff;
 
-      > div {
-        display: inline-block;
-        height: 50px;
-        padding: 10px;
-        float: left;
-      }
+      .thread {
+        background: #d5c594 url(img/bg-light.png) repeat;
+        height: 70px;
+        width: 100%;
 
-      .icon {
-
-      };
-
-      .info {
-        display: flex;
-        align-items: center;
-
-        .thread-title {
-          font-size: 15px;
-        }
-
-        .author {
+        > div {
           display: inline-block;
+          height: 50px;
+          padding: 10px;
+          float: left;
         }
 
-        .post-date {
-          display: inline-block;
+        .icon {
+
+        };
+
+        .info {
+          display: flex;
+          align-items: center;
+
+          .thread-title {
+            font-size: 15px;
+          }
+
+          .author {
+            display: inline-block;
+          }
+
+          .post-date {
+            display: inline-block;
+          }
         }
-      }
 
-      .last-poster {
-        display: flex;
-        align-items: center;
-        float: right;
-      }
+        .last-poster {
+          display: flex;
+          align-items: center;
+          float: right;
+        }
 
-      .stats {
-        display: flex;
-        align-items: center;
-        float: right;
-        text-align: right;
+        .stats {
+          display: flex;
+          align-items: center;
+          float: right;
+          text-align: right;
 
-        >div {
+          >div {
+          }
         }
       }
     }
@@ -360,6 +327,9 @@ a:hover {
   display: inline-block;
   vertical-align: top;
   width: 33%;
+  background: #d5c594 url(img/bg-med.png) repeat;
+  border: #9c906f 1px solid;
+  padding-bottom: 10px;
 
   .back {
     position: absolute;
@@ -373,73 +343,101 @@ a:hover {
   }
 
   .post {
-    border: 1px solid;
-    height: 200px;
-    padding: 4px;
-    width: 100%;
+    padding: 10px 10px 0 10px;
 
-    > div {
-      display: inline-block;
-      float: left;
-    }
+    .thingy {
+      background: #D3C394 url(img/bg-light.png) repeat;
+      border: 1px solid rgba(0,0,0,0.3);
+      box-shadow: 0 0 3px #fff;
+      overflow: hidden;
+      display: table;
+      width: 100%;
 
-    .user {
-      width: 150px;
-
-      .name {
-
+      > div {
+        display: inline-block;
+        vertical-align: top;
       }
 
-      .title {
+      .user {
+        width: 150px;
+        height: 100%;
+        display: table-cell;
+        text-align: center;
+        border-right: 1px solid rgba(150,150,150,0.5);
+        background: url(img/author-cover.png);
+        padding: 5px 15px;
 
-      }
+        .name {
+          color: #5070c8;
+          font-weight: bold;
+          font-size: 16px;
+          padding-bottom: 4px;
+          cursor: not-allowed;
+        }
 
-      .avatar {
-        img {
-          width: 140px;
+        .title {
+          font-size: 12px;
+          color: #333;
+          padding-bottom: 4px;
+        }
+
+        .avatar {
+          padding-bottom: 4px;
+
+          img {
+            max-width: 140px;
+          }
         }
       }
+
+      .content {
+        display: table-cell;
+        padding: 0px 15px;
+
+        .content-header {
+          .post-date {
+            text-shadow: 0 1px 0 #fff;
+            font-size: 12px;
+            padding: 5px 0px;
+          }
+        }
+
+        .content-body {
+          line-height: 1.6;
+          font-size: 14px;
+          color: #282828;
+          padding-top: 10px;
+        }
+
+        .ip-address {
+
+        }
+      }
+
+      .icon {
+        width: 20px;
+        height: 100%;
+        background-color: cyan;
+      }
+
+      .info {
+        width: 380px;
+        height: 100%;
+        background-color: green;
+      }
+
+      .stats {
+        width: 100px;
+        height: 100%;
+        background-color: yellow;
+      }
+
+      .last-poster {
+        width: 200px;
+        height: 100%;
+        background-color: red;
+      }
     }
-
-    .content {
-      /*width: 650px;*/
-
-      .post-date {
-
-      }
-
-      .post-content {
-
-      }
-
-      .ip-address {
-
-      }
-    }
-
-    .icon {
-      width: 20px;
-      height: 100%;
-      background-color: cyan;
-    };
-
-    .info {
-      width: 380px;
-      height: 100%;
-      background-color: green;
-    };
-
-    .stats {
-      width: 100px;
-      height: 100%;
-      background-color: yellow;
-    };
-
-    .last-poster {
-      width: 200px;
-      height: 100%;
-      background-color: red;
-    };
   }
 }
 
@@ -488,6 +486,49 @@ a:hover {
 }
 
 /* SAMPLE STUFF BELOW */
+
+/* Load custom fonts */
+@font-face {
+  font-family: "DroidSans";
+  src: url("../fonts/droid_sans.eot?#iefix") format("embedded-opentype"),
+       url("../fonts/droid_sans.ttf")        format("truetype");
+}
+
+/* Keyframes */
+@keyframes border-pulsate {
+  from {border-color: red; border-color: rgba(255, 0, 0, 0);}
+  to   {border-color: red; border-color: rgba(255, 0, 0, 1);}
+}
+
+/* 500+ */
+@media (min-width: 500px) {
+  .error-404-top {
+    font-size: 200px;
+  }
+
+  .error-404-bot {
+    font-size: 36px;
+  }
+
+  /*.content {
+    font-size: 16px;
+  }*/
+}
+
+/* 1-499 */
+/*@media (max-width: 499px) {
+  .error-404-top {
+    font-size: 100px;
+  }
+
+  .error-404-bot {
+    font-size: 20px;
+  }
+
+  .content {
+    font-size: 8px;
+  }
+}*/
 
 .glow-red {
   border: 2px solid red;
