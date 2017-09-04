@@ -16,6 +16,7 @@ CREATE TABLE `users` (
   `last_seen` datetime DEFAULT NULL,
   `title` varchar(30) DEFAULT NULL,
   `token` varchar(96) DEFAULT NULL,
+  `userscol` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `UNI_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -65,24 +66,4 @@ CREATE TABLE `posts` (
   KEY `IDX_author` (`author`),
   CONSTRAINT `FK_posts_author` FOREIGN KEY (`author`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_posts_thread_id` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`thread_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-  `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(24) NOT NULL,
-  `password_content` varchar(96) NOT NULL,
-  `password_tag` varchar(96) NOT NULL,
-  `password_iv` varchar(96) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `permission` int(11) unsigned NOT NULL DEFAULT '0',
-  `post_count` int(11) unsigned NOT NULL DEFAULT '0',
-  `thread_count` int(11) unsigned NOT NULL DEFAULT '0',
-  `join_date` datetime DEFAULT NULL,
-  `last_seen` datetime DEFAULT NULL,
-  `title` varchar(30) DEFAULT NULL,
-  `token` varchar(96) DEFAULT NULL,
-  `userscol` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `UNI_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
