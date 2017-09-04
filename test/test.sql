@@ -67,13 +67,7 @@ CREATE TABLE `posts` (
   CONSTRAINT `FK_posts_thread_id` FOREIGN KEY (`thread_id`) REFERENCES `threads` (`thread_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `users` WRITE;
-INSERT INTO `users` VALUES (1,'Alex','lSCX4ALiRaxjvoe+','CS5KwYj3kCHJ+vnREA74Pg==','pJfc/rCTkFqESdmBIVu+OXVAXKYlaZ3kyoqqxJu2+e0=','yolo@gmail.com',100,0,0,'2017-04-01 01:54:34','2017-04-01 01:54:34','Fizz Main','c997d247aa3344bae6eb6e4c2db71075ffa29e5329bf864839c9438340058db3ad67dd477faa951b83da2c06ecf70d22'),(2,'Ben','g8lf44vqbIOazK+N4+xXmQ==','mDn0wSxBWnKJ11n3+xUUvg==','d9SbOdv2xHMJZdKNKC2JY61XMFr0bWj/6Li+eRAhzEo=','swag@gmail.com',0,0,0,'2017-04-01 01:54:34','2017-04-01 01:54:34',NULL,'92d93443b7522c5905ecfcc436b947a1a181478063f638fbb074b2cb65057e370fc0939a0681bac6f69a16e67b724244');
-UNLOCK TABLES;
-
 DROP TABLE IF EXISTS `threads`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `threads` (
   `thread_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `board_id` int(11) unsigned NOT NULL,
@@ -92,13 +86,7 @@ CREATE TABLE `threads` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-LOCK TABLES `threads` WRITE;
-INSERT INTO `threads` VALUES (1,1,1,1,'2017-04-01 08:54:34','2017-04-01 08:54:34','Hello everyone!',2,0),(2,1,2,2,'2017-04-01 08:54:34','2017-04-01 08:54:34','Ben here',3,0);
-UNLOCK TABLES;
-
 DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(24) NOT NULL,
@@ -117,5 +105,3 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `UNI_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
