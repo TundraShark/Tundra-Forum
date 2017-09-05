@@ -7,7 +7,7 @@ var version = require("../../package.json").version;
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Fizz",
+  password: "",
   database: "tundra_forum"
 });
 

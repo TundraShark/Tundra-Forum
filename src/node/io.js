@@ -14,7 +14,7 @@ var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept"
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Fizz",
+  password: "",
   database: "tundra_forum"
 });
 
@@ -63,8 +63,8 @@ io.on("connection", function(socket){
   player.num = 1;
   player.id  = 1;
   players[socket.id] = player;
-  console.log("New connection:");
-  console.log(ip);
+  // console.log("New connection:");
+  // console.log(ip);
 
   function CreateBoard(msg, res){return new Promise((done) => {
     if(res){
