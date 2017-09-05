@@ -240,43 +240,25 @@ describe("Running all tests", function (){
 
   it("Make a post Introductions thread #1", function(done){
     var obj = {};
-    obj["userId"]   = 1;
-    obj["token"]    = token1;
-    obj["threadId"] = 1;
-    obj["post"]     = "This is the second post in the first thread that was made";
-
-    client.emit("create-post", obj);
-    client.on("create-post", function(msg){
-      assert(msg);
-      done();
-    });
-  });
-
-  it("Make a post Introductions thread #2", function(done){
-    var obj = {};
-    obj["userId"]   = 1;
-    obj["token"]    = token1;
-    obj["threadId"] = 2;
-    obj["post"]     = "Hello there Ben, my name is Alex. Nice to meet you!";
-
-    client.emit("create-post", obj);
-    client.on("create-post", function(msg){
-      assert(msg);
-      done();
-    });
-  });
-
-  it("Make a post Introductions thread #2", function(done){
-    var obj = {};
     obj["userId"]   = 2;
     obj["token"]    = token2;
-    obj["threadId"] = 2;
-    obj["post"]     = "Hey thanks Alex.";
+    obj["threadId"] = 1;
+    obj["post"]     = "Hey there.";
 
     client.emit("create-post", obj);
     client.on("create-post", function(msg){
       assert(msg);
       done();
+    });
+  });
+
+  it("Make PM", function(done){
+    con.query("UPDATE threads SET post_date = '2017-09-01 10:00:00' WHERE thread_id = 2;", function(err, rows){
+      con.query("UPDATE posts SET post_date = '2017-09-01 10:00:00' WHERE post_id   = 1;", function(err, rows){
+        con.query("UPDATE posts SET post_date = '2017-09-01 12:00:00' WHERE post_id = 3;", function(err, rows){
+          done();
+        });
+      });
     });
   });
 

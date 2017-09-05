@@ -134,7 +134,7 @@ io.on("connection", function(socket){
     date.setTime(date.getTime() + (-tz * 60 * 1000));
     var hours = date.getHours();
     var ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12; // Convert from 24-hour to 12-hour format
+    hours = hours % 12; // Set hours to 0 (if 0-11) or 1 (if 12-23)
     hours = hours ? hours : 12; // Set hours to 12 if it's 0
     return date.getDate() + " " + monthNames[date.getMonth()] + " " + date.getFullYear() + " - " + hours + ":" + date.getMinutes() + " " + ampm;
   }
@@ -200,9 +200,6 @@ io.on("connection", function(socket){
       });
     });
   });
-
-  // socket.emit("test", "REEEEEEEEEE");
-  // socket.emit("fetch-boards-old", "REEEEEEEEEE");
 
   // Get the boards listing for the user
   // NOTE: This depends on what the URL is because I want people
