@@ -54,6 +54,12 @@
     "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage && rm -rf ./coverage",
     "cover": "nyc mocha"
   },
+  "mysql": {
+    "host": "localhost",
+    "user": "root",
+    "password": "Fizz",
+    "database": "tundra_forum"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/TundraFizz/Tundra-Forum.git"

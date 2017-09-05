@@ -15,7 +15,7 @@ var options = {
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "Fizz",
   database: "tundra_forum"
 });
 
