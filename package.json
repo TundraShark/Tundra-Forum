@@ -12,7 +12,6 @@
     "socket.io": "latest",
     "node-sass-middleware": "latest",
     "node-mysql": "latest",
-    "crypto": "latest",
     "moment": "latest"
   },
   "dependency-comments": {
@@ -22,7 +21,6 @@
     "socket.io": "Enables real-time bidirectional communication between client/server",
     "node-sass-middleware": "Converts .sass files to .css",
     "node-mysql": "Allows me to connect to a MySQL database and use it",
-    "crypto": "Encryption",
     "moment": "Easy way of playing around with DateTime objects"
   },
   "devDependencies": {
@@ -55,6 +53,12 @@
     "nodemon": "nodemon src/server.js",
     "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage && rm -rf ./coverage",
     "cover": "nyc mocha"
+  },
+  "mysql": {
+    "host": "localhost",
+    "user": "root",
+    "password": "Fizz",
+    "database": "tundra_forum"
   },
   "repository": {
     "type": "git",
