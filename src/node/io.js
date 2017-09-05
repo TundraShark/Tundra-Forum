@@ -3,7 +3,7 @@ var mysql  = require("mysql");
 var ejs    = require("ejs");
 var moment = require("moment");
 var fs     = require("fs");
-var REEEEEE = require("../../package.json").mysql;
+var db     = require("../../package.json").db;
 
 // TODO!
 // Google the function of ejs.renderFile()
@@ -13,10 +13,10 @@ var players = {};
 var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
 var con = mysql.createConnection({
-  host: REEEEEE["host"],
-  user: REEEEEE["user"],
-  password: REEEEEE["password"],
-  database: REEEEEE["database"]
+  host:     db["host"],
+  user:     db["user"],
+  password: db["password"],
+  database: db["database"]
 });
 
 function Authenticate(msg, perm = 0){return new Promise((done) => {
@@ -47,8 +47,7 @@ io.on("connection", function(socket){
   player.num = 1;
   player.id  = 1;
   players[socket.id] = player;
-  // console.log("New connection:");
-  // console.log(ip);
+  // console.log("New connection:");console.log(ip);
 
   function CreateBoard(msg, res){return new Promise((done) => {
     if(res){
@@ -165,7 +164,6 @@ io.on("connection", function(socket){
   });
 
   socket.on("fetch-boards", function(){
-    console.log("FETCHING THE BOARDS");
     var sql = "SELECT * FROM boards";
     con.query(sql, function(err, rows){
       ejs.renderFile("./views/test.ejs", {rows: rows}, function(err, html){

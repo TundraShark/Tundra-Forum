@@ -3,13 +3,13 @@ var mysql   = require("mysql");
 var fs      = require("fs");
 var crypto  = require("crypto");
 var version = require("../../package.json").version;
-var REEEEEE = require("../../package.json").mysql;
+var db      = require("../../package.json").db;
 
 var con = mysql.createConnection({
-  host: REEEEEE["host"],
-  user: REEEEEE["user"],
-  password: REEEEEE["password"],
-  database: REEEEEE["database"]
+  host:     db["host"],
+  user:     db["user"],
+  password: db["password"],
+  database: db["database"]
 });
 
 function Encrypt(password){

@@ -28,10 +28,10 @@ describe("Running all tests", function (){
 
   it("Truncating all tables", function(done){
     con.query("SET FOREIGN_KEY_CHECKS = 0", function(err, rows){
-      con.query("SHOW TABLES", function(err, rows){
+      con.query("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='tundra_forum'", function(err, rows){
         var lock = rows.length;
         for(var i = 0; i < rows.length; i++){
-          var table = rows[i][`Tables_in_${db["database"]}`];
+          var table = rows[i]["TABLE_NAME"];
           var sql = `TRUNCATE ${table}`;
           con.query(sql, function(err, rows){
             if(--lock == 0){
