@@ -57,7 +57,7 @@
   "db": {
     "host": "localhost",
     "user": "root",
-    "password": "Fizz",
+    "password": "",
     "database": "tundra_forum"
   },
   "repository": {
