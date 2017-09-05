@@ -3,6 +3,7 @@ var mysql  = require("mysql");
 var ejs    = require("ejs");
 var moment = require("moment");
 var fs     = require("fs");
+var db     = require("../../package.json").db;
 
 // TODO!
 // Google the function of ejs.renderFile()
@@ -12,28 +13,11 @@ var players = {};
 var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Fizz",
-  database: "tundra_forum"
+  host:     db["host"],
+  user:     db["user"],
+  password: db["password"],
+  database: db["database"]
 });
-
-// fs.readFile("../config.json", "utf-8", (error, data) => {
-//   if(error){
-//     console.log(error);
-//     return;
-//   }
-
-//   data = JSON.parse(data);
-//   console.log(data);
-
-//   con = mysql.createConnection({
-//     host    : data["host"],
-//     user    : data["user"],
-//     password: data["password"],
-//     database: data["database"]
-//   });
-// });
 
 function Authenticate(msg, perm = 0){return new Promise((done) => {
   var userId = msg["userId"];
@@ -63,8 +47,7 @@ io.on("connection", function(socket){
   player.num = 1;
   player.id  = 1;
   players[socket.id] = player;
-  console.log("New connection:");
-  console.log(ip);
+  // console.log("New connection:");console.log(ip);
 
   function CreateBoard(msg, res){return new Promise((done) => {
     if(res){
@@ -181,7 +164,6 @@ io.on("connection", function(socket){
   });
 
   socket.on("fetch-boards", function(){
-    console.log("FETCHING THE BOARDS");
     var sql = "SELECT * FROM boards";
     con.query(sql, function(err, rows){
       ejs.renderFile("./views/test.ejs", {rows: rows}, function(err, html){

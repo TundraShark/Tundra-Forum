@@ -2,10 +2,6 @@ CREATE DATABASE IF NOT EXISTS `tundra_forum`;
 USE `tundra_forum`;
 
 DROP TABLE IF EXISTS `users`;
-DROP TABLE IF EXISTS `boards`;
-DROP TABLE IF EXISTS `threads`;
-DROP TABLE IF EXISTS `posts`;
-
 CREATE TABLE `users` (
   `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(24) NOT NULL,
@@ -25,7 +21,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `UNI_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+DROP TABLE IF EXISTS `boards`;
 CREATE TABLE `boards` (
   `board_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
@@ -37,7 +33,7 @@ CREATE TABLE `boards` (
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+DROP TABLE IF EXISTS `threads`;
 CREATE TABLE `threads` (
   `thread_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `board_id` int(11) unsigned NOT NULL,
@@ -55,7 +51,7 @@ CREATE TABLE `threads` (
   CONSTRAINT `FK_threads_board_id` FOREIGN KEY (`board_id`) REFERENCES `boards` (`board_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+DROP TABLE IF EXISTS `posts`;
 CREATE TABLE `posts` (
   `post_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `thread_id` int(11) unsigned NOT NULL,

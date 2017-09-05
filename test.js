@@ -14,10 +14,10 @@ var options = {
 };
 
 var con = mysql.createConnection({
-  host:     db["host"],
-  user:     db["user"],
-  password: db["password"],
-  database: db["database"]
+  host: "localhost",
+  user: "root",
+  password: "Fizz",
+  database: "tundra_forum"
 });
 
 describe("Running all tests", function (){
@@ -31,7 +31,7 @@ describe("Running all tests", function (){
       con.query("SHOW TABLES", function(err, rows){
         var lock = rows.length;
         for(var i = 0; i < rows.length; i++){
-          var table = rows[i][`Tables_in_${db["database"]}`];
+          var table = rows[i]["Tables_in_tundra_forum"];
           var sql = `TRUNCATE ${table}`;
           con.query(sql, function(err, rows){
             if(--lock == 0){
