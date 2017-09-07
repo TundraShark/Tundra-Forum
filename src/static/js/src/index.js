@@ -3,6 +3,10 @@ var token = Cookies.get("token");
 console.log("YOUR COOKIE");
 console.log(token);
 
+var boardUrl  = "";
+var threadUrl = "";
+var threadId  = null;
+
 function SignUp(){
   var name = $("#name").val();
   $.post("sign-up", {name: name}, function(data){
@@ -51,9 +55,16 @@ socket.on("bad-auth", function(msg){
   alert(msg);
 });
 
-socket.on("fetch-boards-old", function(msg){
+socket.on("start-fetch-boards", function(msg){
   $("#board-index").html(msg);
-  // history.pushState(null, null, msg);
+});
+
+socket.on("start-fetch-threads", function(msg){
+  $("#threads").html(msg);
+});
+
+socket.on("start-fetch-posts", function(msg){
+  $("#posts").html(msg);
 });
 
 var navLocation = 1;
@@ -115,7 +126,8 @@ function BindBoard(){
     }
     animationLock = true;
     var boardId = $(this).attr("board-id");
-    // history.pushState(null, null, boardId);
+    boardUrl = $(this).text();
+    UpdateUrl();
     socket.emit("fetch-threads", boardId, new Date().getTimezoneOffset());
   });
 }
@@ -125,8 +137,9 @@ function BindThread(){
     if(animationLock)
       return;
     animationLock = true;
-    var threadId = $(this).attr("thread-id");
-    // history.pushState(null, null, threadId);
+    threadId = $(this).attr("thread-id");
+    threadUrl = $(this).text();
+    UpdateUrl();
     socket.emit("fetch-posts", threadId, new Date().getTimezoneOffset());
   });
 
@@ -134,6 +147,8 @@ function BindThread(){
     if(animationLock)
       return;
     animationLock = true;
+    boardUrl = "";
+    UpdateUrl();
     socket.emit("fetch-boards");
   });
 }
@@ -144,6 +159,22 @@ function BindPost(){
       return;
     animationLock = true;
     var boardId = $(this).attr("board-id");
+    threadUrl = "";
+    UpdateUrl();
     socket.emit("fetch-threads", boardId, new Date().getTimezoneOffset());
   });
+}
+
+function UpdateUrl(){
+  var abc = "/";
+
+  if(boardUrl)
+    abc += boardUrl;
+
+  if(threadUrl)
+    abc += "/" + threadId + "-" + threadUrl;
+
+  abc = abc.replace(/\s+/g, "-").toLowerCase();
+
+  history.pushState(null, null, abc);
 }

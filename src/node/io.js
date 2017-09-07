@@ -38,6 +38,8 @@ function Authenticate(msg, perm = 0){return new Promise((done) => {
 });}
 
 io.on("connection", function(socket){
+  var url = socket.request.headers.referer;
+
   // Getting the IP address is currently broken on Socket.IO version 2.0.3
   // I need to wait for a patch in order to properly get the IP address
   // var ip = socket.request.connection._peername.address;
@@ -205,12 +207,51 @@ io.on("connection", function(socket){
   // NOTE: This depends on what the URL is because I want people
   //       to be able to go to a specific board or thread
 
-  var sql = "SELECT * FROM boards";
-  con.query(sql, function(err, rows){
-    ejs.renderFile("./views/test.ejs", {rows: rows}, function(err, html){
-      socket.emit("fetch-boards-old", html);
+  var regex = /http(?:s?):\/\/(?:.*?)\/(.*)/i;
+  var urlPath = regex.exec(url)[1];
+
+  if(urlPath == ""){
+    // Boards
+
+    var sql = "SELECT * FROM boards";
+    con.query(sql, function(err, rows){
+      ejs.renderFile("./views/test.ejs", {rows: rows}, function(err, html){
+        socket.emit("start-fetch-boards", html);
+      });
     });
-  });
+  }else if(urlPath.indexOf("/") == -1){
+    // Threads
+
+    var msg = 1; var tz = 0; // DEBUG VARIABLES
+    var sql = "SELECT * FROM threads WHERE board_id = ?";
+    var args = [msg];
+    con.query(sql, args, function(err, rows){
+      for(var i = 0; i < rows.length; i++){
+        rows[i]["last_poster_date"] = FormatDateShort(rows[i]["last_poster_date"], tz);
+        rows[i]["post_date"]        = FormatDateShort(rows[i]["post_date"], tz);
+      }
+
+      ejs.renderFile("./views/test2.ejs", {rows: rows}, function(err, html){
+        console.log(html);
+        socket.emit("start-fetch-threads", html);
+      });
+    });
+  }else{
+    // Posts
+
+    var msg = 1; var tz = 0; // DEBUG VARIABLES
+    var sql = "SELECT t.board_id, p.*, u.user_id, u.name, u.title FROM posts p JOIN users u ON author = user_id JOIN threads t ON p.thread_id = t.thread_id WHERE p.thread_id = ?";
+    var args = [msg];
+    con.query(sql, args, function(err, rows){
+      for(var i = 0; i < rows.length; i++){
+        rows[i]["post_date"] = FormatDateLong(rows[i]["post_date"], tz);
+      }
+
+      ejs.renderFile("./views/test3.ejs", {rows: rows}, function(err, html){
+        socket.emit("start-fetch-posts", html);
+      });
+    });
+  }
 });
 
 /*

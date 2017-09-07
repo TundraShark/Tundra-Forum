@@ -252,7 +252,7 @@ describe("Running all tests", function (){
     });
   });
 
-  it("Make PM", function(done){
+  it("Modify post dates so it covers AM and PM", function(done){
     con.query("UPDATE threads SET post_date = '2017-09-01 10:00:00' WHERE thread_id = 2;", function(err, rows){
       con.query("UPDATE posts SET post_date = '2017-09-01 10:00:00' WHERE post_id   = 1;", function(err, rows){
         con.query("UPDATE posts SET post_date = '2017-09-01 12:00:00' WHERE post_id = 3;", function(err, rows){

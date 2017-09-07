@@ -129,7 +129,7 @@ app.post("/logout", function(req, res){
   res.json(data);
 });
 
-app.get("/", function(req, res){
+app.get("/*", function(req, res){
   res.render("index.ejs", {version: version});
 });
 
