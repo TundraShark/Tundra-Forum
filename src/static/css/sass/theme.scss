@@ -90,22 +90,42 @@ a:hover {
 }
 
 #forum-window {
-  overflow: hidden;
+  position: relative;
+  width: 33%;
+  margin: 0 auto;
+  min-width: 800px;
+  /*min-width: 830px;*/ /* <-- Use this value instead of 830, because 800 is just for testing */
+
+  /*overflow: hidden;
   margin: 0 auto;
   width: 70%;
-  min-width: 830px;
+  min-width: 830px;*/
+
 
   /*width: 815px;*/ /* <-- Should I use 830 or this? */
   /*margin: auto;*/
+
+  #content,
+  #content-leaving,
+  #content-arriving {
+    width: 100%;
+    /*min-height: 300px;*/
+    min-height: 100px;
+    position: absolute;
+
+    /*margin: 6px;*/
+  }
 }
 
-#forum-container {
+/*#forum-container {
   position: relative;
   width: 300%;
   /*width: 2600px;*/
-}
+/*}*/
 
-#board-index {
+#content[type="board-index"],
+#content-arriving[type="board-index"],
+#content-leaving[type="board-index"] {
   position: relative;
   display: inline-block;
   vertical-align: top;
@@ -214,7 +234,9 @@ a:hover {
   }
 }
 
-#threads {
+#content[type="threads"],
+#content-arriving[type="threads"],
+#content-leaving[type="threads"] {
   position: relative;
   display: inline-block;
   vertical-align: top;
@@ -322,7 +344,9 @@ a:hover {
   }
 }
 
-#posts {
+#content[type="posts"],
+#content-arriving[type="posts"],
+#content-leaving[type="posts"] {
   position: relative;
   display: inline-block;
   vertical-align: top;

@@ -3,9 +3,20 @@ var token = Cookies.get("token");
 console.log("YOUR COOKIE");
 console.log(token);
 
-var boardUrl  = "";
-var threadUrl = "";
-var threadId  = null;
+jQuery.easing["jswing"] = jQuery.easing["swing"];
+jQuery.extend(jQuery.easing, {
+  easeOutCubic: function (x, t, b, c, d){
+    return c*((t=t/d-1)*t*t + 1) + b;
+  }
+});
+
+var boardUrl     = "";
+var threadUrl    = "";
+var threadId     = null;
+var socket       = io();
+var navLocation  = 1;
+var fadeSpeed    = 300;
+var fadeDistance = 150;
 
 function SignUp(){
   var name = $("#name").val();
@@ -42,9 +53,6 @@ function Post(){
   socket.emit("post", obj);
 }
 
-var socket = io();
-var animationLock = false;
-
 socket.on("post", function(msg){
   console.log(msg);
   var html = `<div class="post">${msg}</div>`;
@@ -56,75 +64,77 @@ socket.on("bad-auth", function(msg){
 });
 
 socket.on("start-fetch-boards", function(msg){
-  $("#board-index").html(msg);
+  $("#content").attr("type", "board-index");
+  $("#content").html(msg);
 });
 
 socket.on("start-fetch-threads", function(msg){
-  $("#threads").html(msg);
+  $("#content").attr("type", "threads");
+  $("#content").html(msg);
 });
 
 socket.on("start-fetch-posts", function(msg){
-  $("#posts").html(msg);
+  $("#content").attr("type", "posts");
+  $("#content").html(msg);
 });
 
-var navLocation = 1;
+function PageFlip(msg, direction, contentType){
+  var temp1, temp2;
 
-function REEEEEEEEE(){
-  if(navLocation === 1){
-    // $("#board-index").html("<div style='width:33%'></div>");
-    $("#threads").html("<div style='width:33%'></div>");
-    $("#posts").html("<div style='width:33%'></div>");
-  }else if(navLocation === 2){
-    $("#board-index").html("<div style='width:33%'></div>");
-    // $("#threads").html("<div style='width:33%'></div>");
-    $("#posts").html("<div style='width:33%'></div>");
-  }else if(navLocation === 3){
-    $("#board-index").html("<div style='width:33%'></div>");
-    $("#threads").html("<div style='width:33%'></div>");
-    // $("#posts").html("<div style='width:33%'></div>");
+  if(direction == "next"){
+    temp1 = `+=${fadeDistance}`;
+    temp2 = `-=${fadeDistance}`;
+  }else if(direction == "prev"){
+    temp1 = `-=${fadeDistance}`;
+    temp2 = `+=${fadeDistance}`;
+  }else{
+    alert(`The "direction" variable for PageFlip must be either "next" or "prev"`);
+    return;
   }
-  animationLock = false;
+
+  $("#content-leaving").attr("id", "content-arriving");
+  $("#content").attr("id", "content-leaving");
+  $("#content-arriving").html(msg);
+  $("#content-arriving").css("display", "block");
+  $("#content-arriving").css("left", temp1);
+  $("#content-arriving").attr("type", contentType);
+
+  $("#content-leaving").animate({
+    opacity: 0,
+    left: temp2
+  }, fadeSpeed, "easeOutCubic", function(){
+    $("#content-leaving").css("display", "none");
+    $("#content-leaving").css("left", "0px");
+  });
+
+  $("#content-arriving").animate({
+    opacity: 1,
+    left: temp2
+  }, fadeSpeed, "easeOutCubic", function(){
+    $("#content-arriving").attr("id", "content");
+  });
 }
 
 socket.on("fetch-boards", function(msg){
-  $("#board-index").html(msg);
+  PageFlip(msg, "prev", "board-index");
   navLocation = 1;
-
-  $("#forum-container").animate({
-    left: "0"
-  }, 300, function(){
-    REEEEEEEEE(navLocation);
-  });
 });
 
 socket.on("fetch-threads", function(msg){
-  $("#threads").html(msg);
+  if(navLocation == 1)
+    PageFlip(msg, "next", "threads");
+  else if(navLocation == 3)
+    PageFlip(msg, "prev", "threads");
   navLocation = 2;
-
-   $("#forum-container").animate({
-    left: "-99%"
-  }, 300, function(){
-    REEEEEEEEE(navLocation);
-  });
 });
 
 socket.on("fetch-posts", function(msg){
-  $("#posts").html(msg);
+  PageFlip(msg, "next", "posts");
   navLocation = 3;
-
-   $("#forum-container").animate({
-    left: "-198%"
-  }, 300, function(){
-    REEEEEEEEE(navLocation);
-  });
 });
 
 function BindBoard(){
   $(".board-title").click(function(event){
-    if(animationLock){
-      return;
-    }
-    animationLock = true;
     var boardId = $(this).attr("board-id");
     boardUrl = $(this).text();
     UpdateUrl();
@@ -134,9 +144,6 @@ function BindBoard(){
 
 function BindThread(){
   $(".thread-title").click(function(event){
-    if(animationLock)
-      return;
-    animationLock = true;
     threadId = $(this).attr("thread-id");
     threadUrl = $(this).text();
     UpdateUrl();
@@ -144,9 +151,6 @@ function BindThread(){
   });
 
   $(".back").click(function(event){
-    if(animationLock)
-      return;
-    animationLock = true;
     boardUrl = "";
     UpdateUrl();
     socket.emit("fetch-boards");
@@ -155,9 +159,6 @@ function BindThread(){
 
 function BindPost(){
   $(".back").click(function(event){
-    if(animationLock)
-      return;
-    animationLock = true;
     var boardId = $(this).attr("board-id");
     threadUrl = "";
     UpdateUrl();
